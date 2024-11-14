@@ -11,6 +11,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,8 @@ public class GameEngine {
     private Camera camera;
     private List<Platform> platforms;
     private Image backgroundImage;
+    private GameState gameState;
+    private Menu menu;
 
     public GameEngine(Stage stage) {
         initializeGame(stage);
@@ -36,9 +41,11 @@ public class GameEngine {
         // Create player
         player = new Player((double) Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT - Constants.PLAYER_HEIGHT);
 
-        // Initialize input manager and camera
+        // Initialize components
         inputManager = new InputManager();
         camera = new Camera();
+        menu = new Menu();
+        gameState = GameState.MENU;
 
         // Initialize platforms
         platforms = new ArrayList<>();
@@ -56,15 +63,11 @@ public class GameEngine {
         Pane root = new Pane(canvas);
         Scene scene = new Scene(root);
 
-        scene.setOnKeyPressed(e -> inputManager.handleKeyPress(e.getCode()));
-        scene.setOnKeyReleased(e -> inputManager.handleKeyRelease(e.getCode()));
-
-
         // 키 입력 처리 수정
         scene.setOnKeyPressed(e -> {
             inputManager.handleKeyPress(e.getCode());
-            // 스페이스바 입력 확인용 디버그 출력
-            if (e.getCode() == KeyCode.SPACE) {
+            handleKeyPress(e.getCode());
+            if (e.getCode() == KeyCode.SPACE && gameState == GameState.PLAYING) {
                 System.out.println("Space pressed!");
             }
         });
@@ -85,11 +88,47 @@ public class GameEngine {
         };
     }
 
+    private void handleKeyPress(KeyCode code) {
+        switch (gameState) {
+            case MENU:
+                handleMenuInput(code);
+                break;
+            case PLAYING:
+                if (code == KeyCode.ESCAPE) {
+                    gameState = GameState.PAUSED;
+                }
+                break;
+            case PAUSED:
+                if (code == KeyCode.ESCAPE) {
+                    gameState = GameState.PLAYING;
+                } else if (code == KeyCode.M) {
+                    gameState = GameState.MENU;
+                }
+                break;
+        }
+    }
+
+    private void handleMenuInput(KeyCode code) {
+        switch (code) {
+            case UP:
+                menu.moveUp();
+                break;
+            case DOWN:
+                menu.moveDown();
+                break;
+            case ENTER:
+                if (menu.getSelectedOption() == 0) {
+                    gameState = GameState.PLAYING;
+                } else if (menu.getSelectedOption() == 2) {
+                    javafx.application.Platform.exit();
+                }
+                break;
+        }
+    }
+
     private void initializePlatforms() {
         platforms = new ArrayList<>();
-
         platforms.add(new Platform(0, Constants.LEVEL_HEIGHT - 20, Constants.LEVEL_WIDTH, 20));
-
         platforms.add(new Platform(600, 400, 150, 20));
         platforms.add(new Platform(900, 350, 200, 20));
         platforms.add(new Platform(1200, 350, 150, 20));
@@ -101,19 +140,25 @@ public class GameEngine {
     }
 
     private void update() {
+        switch (gameState) {
+            case PLAYING:
+                updateGame();
+                break;
+            case MENU:
+            case PAUSED:
+                break;
+        }
+    }
+
+    private void updateGame() {
         // Handle input
-        if (inputManager.isKeyPressed(KeyCode.A)) {
+        if (inputManager.isKeyPressed(KeyCode.LEFT)) {
             player.moveLeft();
         }
-        if (inputManager.isKeyPressed(KeyCode.D)) {
+        if (inputManager.isKeyPressed(KeyCode.RIGHT)) {
             player.moveRight();
         }
-        if (inputManager.isKeyPressed(KeyCode.SPACE)) {
-            player.jump();
-        }
-
-        // space bar debugging
-        if (inputManager.isKeyPressed(KeyCode.SPACE)) {
+        if (inputManager.isKeyPressed(KeyCode.UP)) {
             System.out.println("Attempting to jump");
             player.jump();
         }
@@ -138,15 +183,26 @@ public class GameEngine {
     }
 
     private void render() {
-        // Clear canvas
         gc.clearRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 
+        switch (gameState) {
+            case MENU:
+                menu.render(gc);
+                break;
+            case PLAYING:
+                renderGame();
+                break;
+            case PAUSED:
+                renderGame();
+                renderPauseScreen();
+                break;
+        }
+    }
+
+    private void renderGame() {
         // Render background
         if (backgroundImage != null) {
-            // Parallax scrolling effect
             double bgX = -camera.getX() * 0.5;
-
-            // Repeat background image
             double currentX = bgX % backgroundImage.getWidth();
             if (currentX > 0) currentX -= backgroundImage.getWidth();
 
@@ -167,6 +223,19 @@ public class GameEngine {
         player.render(gc);
 
         gc.restore();
+    }
+
+    private void renderPauseScreen() {
+        gc.setFill(new Color(0, 0, 0, 0.5));
+        gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("Arial", 36));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText("PAUSED", Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2);
+        gc.setFont(new Font("Arial", 18));
+        gc.fillText("Press ESC to resume", Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2 + 40);
+        gc.fillText("Press M for menu", Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2 + 70);
     }
 
     public void start() {
