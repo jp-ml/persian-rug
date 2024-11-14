@@ -3,30 +3,24 @@ package com.persianrug.entity;
 import com.persianrug.utils.Constants;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import java.util.Objects;
 
 public class Player extends GameObject {
     private double velocityX = 0;
     private double velocityY = 0;
-    private boolean onGround = false;
+    private boolean onGround = true;  // 시작할 때 true로 설정
     private Image characterImage;
     private boolean isFacingRight = true;
 
     public Player(double x, double y) {
         super(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
         loadCharacterImage();
+        System.out.println("Player created at: " + x + ", " + y); // 디버깅용
     }
 
     private void loadCharacterImage() {
         try {
-            String imagePath = Objects.requireNonNull(
-                    getClass().getResource("/images/character.png")).toString();
-            characterImage = new Image(imagePath);
-
-            this.width = characterImage.getWidth();
-            this.height = characterImage.getHeight();
-
-            System.out.println("Character image loaded successfully");
+            String imagePath = "/images/character.png";
+            characterImage = new Image(getClass().getResource(imagePath).toString());
         } catch (Exception e) {
             System.err.println("Character image loading failed: " + e.getMessage());
             e.printStackTrace();
@@ -35,35 +29,47 @@ public class Player extends GameObject {
 
     @Override
     public void update() {
+        updatePreviousPosition();
+
+        // 중력 적용
         velocityY += Constants.GRAVITY;
 
+        // 마찰력 적용
         velocityX *= Constants.FRICTION;
 
+        // 위치 업데이트
         x += velocityX;
         y += velocityY;
 
+        // 이동 방향에 따라 캐릭터 방향 설정
         if (velocityX > 0) {
             isFacingRight = true;
         } else if (velocityX < 0) {
             isFacingRight = false;
         }
 
-        if (y > Constants.WINDOW_HEIGHT - height) {
-            y = Constants.WINDOW_HEIGHT - height;
-            velocityY = 0;
-            onGround = true;
-        } else {
-            onGround = false;
-        }
-
+        // 맵 경계 체크
         if (x < 0) {
             x = 0;
             velocityX = 0;
         }
-        if (x > Constants.WINDOW_WIDTH - width) {
-            x = Constants.WINDOW_WIDTH - width;
+        if (x > Constants.LEVEL_WIDTH - width) {
+            x = Constants.LEVEL_WIDTH - width;
             velocityX = 0;
         }
+
+        // 바닥 체크
+        if (y > Constants.LEVEL_HEIGHT - height - 20) {
+            y = Constants.LEVEL_HEIGHT - height - 20;
+            velocityY = 0;
+            onGround = true;
+            System.out.println("On ground!"); // 디버깅용
+        }
+
+        // 디버깅 정보 출력
+        System.out.println("Position: " + x + ", " + y +
+                " Velocity: " + velocityX + ", " + velocityY +
+                " OnGround: " + onGround);
     }
 
     @Override
@@ -78,9 +84,6 @@ public class Player extends GameObject {
                 gc.drawImage(characterImage, 0, 0, width, height);
                 gc.restore();
             }
-        } else {
-            gc.setFill(javafx.scene.paint.Color.BLUE);
-            gc.fillRect(x, y, width, height);
         }
     }
 
@@ -96,10 +99,32 @@ public class Player extends GameObject {
         if (onGround) {
             velocityY = Constants.JUMP_FORCE;
             onGround = false;
+            System.out.println("Jump initiated! Velocity Y: " + velocityY); // 디버깅용
+        } else {
+            System.out.println("Cannot jump - not on ground"); // 디버깅용
         }
     }
 
-    public boolean canJump() {
-        return onGround;
+    public void handlePlatformCollision(Platform platform) {
+        double platformTop = platform.getY();
+        double platformLeft = platform.getX();
+        double platformRight = platform.getX() + platform.getWidth();
+
+        // 착지 체크
+        if (velocityY > 0 &&
+                previousY + height <= platformTop &&
+                y + height >= platformTop &&
+                x + width > platformLeft &&
+                x < platformRight) {
+
+            y = platformTop - height;
+            velocityY = 0;
+            onGround = true;
+            System.out.println("Landing on platform!"); // 디버깅용
+        }
+    }
+
+    public void setOnGround(boolean onGround) {
+        this.onGround = onGround;
     }
 }

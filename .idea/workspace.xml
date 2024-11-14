@@ -4,12 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="26004743-d471-4977-a5a3-6fba98f88160" name="Changes" comment="Hello World!">
+    <list default="true" id="26004743-d471-4977-a5a3-6fba98f88160" name="Changes" comment="Add configuration files">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/comp2522202430termprojectpersianrug/HelloApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/comp2522202430termprojectpersianrug/HelloController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/persianrug/engine/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/persianrug/engine/GameEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/persianrug/entity/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/persianrug/entity/GameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/persianrug/entity/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/persianrug/entity/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/persianrug/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/persianrug/utils/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/comp2522202430termprojectpersianrug/hello-view.fxml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +62,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
+    "Application.wdMain.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -99,7 +105,7 @@
       <workItem from="1726638697421" duration="1293000" />
       <workItem from="1727065028307" duration="27000" />
       <workItem from="1727319206683" duration="3000" />
-      <workItem from="1731568976970" duration="2042000" />
+      <workItem from="1731568976970" duration="6312000" />
     </task>
     <task id="LOCAL-00001" summary="Hello World!">
       <option name="closed" value="true" />
@@ -109,7 +115,71 @@
       <option name="project" value="LOCAL" />
       <updated>1726639834651</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add character image">
+      <option name="closed" value="true" />
+      <created>1731571259568</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1731571259568</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add Constant values file">
+      <option name="closed" value="true" />
+      <created>1731571277472</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1731571277472</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Add game engine related files">
+      <option name="closed" value="true" />
+      <created>1731571334840</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1731571334840</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Add game object related files">
+      <option name="closed" value="true" />
+      <created>1731571368270</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1731571368270</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add player file">
+      <option name="closed" value="true" />
+      <created>1731571381615</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1731571381615</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Add Main file">
+      <option name="closed" value="true" />
+      <created>1731571391679</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1731571391679</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Delete unnecessary files">
+      <option name="closed" value="true" />
+      <created>1731571437422</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1731571437422</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Add configuration files">
+      <option name="closed" value="true" />
+      <created>1731571452697</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1731571452697</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -117,6 +187,14 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Hello World!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Hello World!" />
+    <MESSAGE value="Add character image" />
+    <MESSAGE value="Add Constant values file" />
+    <MESSAGE value="Add game engine related files" />
+    <MESSAGE value="Add game object related files" />
+    <MESSAGE value="Add player file" />
+    <MESSAGE value="Add Main file" />
+    <MESSAGE value="Delete unnecessary files" />
+    <MESSAGE value="Add configuration files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add configuration files" />
   </component>
 </project>
