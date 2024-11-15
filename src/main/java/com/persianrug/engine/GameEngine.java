@@ -28,6 +28,7 @@ public class GameEngine {
     private Image backgroundImage;
     private GameState gameState;
     private Menu menu;
+    private boolean jumpPressed = false;
 
     public GameEngine(Stage stage) {
         initializeGame(stage);
@@ -39,7 +40,10 @@ public class GameEngine {
         gc = canvas.getGraphicsContext2D();
 
         // Create player
-        player = new Player((double) Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT - Constants.PLAYER_HEIGHT);
+        player = new Player(
+                300,
+                Constants.LEVEL_HEIGHT - Constants.PLAYER_HEIGHT - 20
+        );
 
         // Initialize components
         inputManager = new InputManager();
@@ -53,7 +57,7 @@ public class GameEngine {
 
         // Load background image
         try {
-            backgroundImage = new Image(getClass().getResource("/images/persianGarden.png").toString());
+            backgroundImage = new Image(getClass().getResource("/images/background.png").toString());
             System.out.println("Background image loaded successfully");
         } catch (Exception e) {
             System.err.println("Background image loading failed: " + e.getMessage());
@@ -63,7 +67,6 @@ public class GameEngine {
         Pane root = new Pane(canvas);
         Scene scene = new Scene(root);
 
-        // Key input handling
         scene.setOnKeyPressed(e -> {
             inputManager.handleKeyPress(e.getCode());
             handleKeyPress(e.getCode());
@@ -128,20 +131,105 @@ public class GameEngine {
 
     private void initializePlatforms() {
         platforms = new ArrayList<>();
-        platforms.add(new Platform(0, Constants.LEVEL_HEIGHT - 20, Constants.LEVEL_WIDTH, 20));
-        platforms.add(new Platform(600, 50, 200, 20));
-        platforms.add(new Platform(450, 150, 50, 20));
-        platforms.add(new Platform(350, 300, 50, 20));
-        platforms.add(new Platform(250, 450, 50, 20));
-        platforms.add(new Platform(150, 600, 50, 20));
-        platforms.add(new Platform(0, 750, 100, 20));
-        platforms.add(new Platform(150, 900, 100, 20));
-        platforms.add(new Platform(300, 1050, 100, 20));
-        platforms.add(new Platform(500, 1200, 100, 20));
-        platforms.add(new Platform(650, 1350, 150, 20));
-        platforms.add(new Platform(450, 1500, 150, 20));
-        platforms.add(new Platform(200, 1650, 150, 20));
-        platforms.add(new Platform(0, 1800, 150, 20));
+
+        platforms.add(new Platform(0, 7480, Constants.LEVEL_WIDTH, 20));
+
+        platforms.add(new Platform(300, 7000, Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(600, 6700, Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(900, 6400, Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT));
+
+        double currentX = 1300;
+        for(int i = 0; i < 5; i++) {
+            platforms.add(new Platform(
+                    currentX + (i * 400),
+                    6100 - (i * 200),
+                    Constants.PLATFORM_WIDTH - 30,
+                    Constants.PLATFORM_HEIGHT
+            ));
+        }
+
+        currentX = 3300;
+        for(int i = 0; i < 6; i++) {
+            platforms.add(new Platform(
+                    currentX - (i * 350),
+                    5100 - (i * 250),
+                    Constants.PLATFORM_WIDTH - 20,
+                    Constants.PLATFORM_HEIGHT
+            ));
+
+            if(i % 2 == 0) {
+                platforms.add(new Platform(
+                        currentX - (i * 350) - 175,
+                        5100 - (i * 250) + 125,
+                        Constants.PLATFORM_WIDTH - 80,
+                        Constants.PLATFORM_HEIGHT
+                ));
+            }
+        }
+
+        for(int i = 0; i < 4; i++) {
+            platforms.add(new Platform(
+                    1500 + (i * 500),
+                    3800 - (i * 200),
+                    Constants.PLATFORM_WIDTH - 50,
+                    Constants.PLATFORM_HEIGHT
+            ));
+        }
+
+        for(int i = 0; i < 5; i++) {
+            platforms.add(new Platform(
+                    3500 + (i * 450),
+                    3000 - (i * 180),
+                    Constants.PLATFORM_WIDTH - 40,
+                    Constants.PLATFORM_HEIGHT
+            ));
+
+            if(i % 2 == 1) {
+                platforms.add(new Platform(
+                        3500 + (i * 450) + 225,
+                        3000 - (i * 180) - 90,
+                        Constants.PLATFORM_WIDTH - 90, // 매우 작은 플랫폼
+                        Constants.PLATFORM_HEIGHT
+                ));
+            }
+        }
+
+        for(int i = 0; i < 6; i++) {
+            double xOffset = (i % 2 == 0) ? 0 : 300;
+            platforms.add(new Platform(
+                    5800 + xOffset + (i * 400),
+                    2200 - (i * 150),
+                    Constants.PLATFORM_WIDTH - 60,
+                    Constants.PLATFORM_HEIGHT
+            ));
+        }
+
+        platforms.add(new Platform(8000, 1500, Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(8500, 1300, Constants.PLATFORM_WIDTH - 40, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(9000, 1100, Constants.PLATFORM_WIDTH - 30, Constants.PLATFORM_HEIGHT));
+
+        platforms.add(new Platform(9400, 1000, Constants.PLATFORM_WIDTH * 2, Constants.PLATFORM_HEIGHT));
+
+        addRecoveryPlatforms();
+    }
+
+    private void addRecoveryPlatforms() {
+        double[][] recoveryPoints = {
+                {2000, 5500}, {4000, 4500}, {6000, 3500},
+                {3000, 4000}, {5000, 2500}, {7000, 2000},
+                {2500, 5000}, {4500, 3500}, {6500, 2500}
+        };
+
+        for(double[] point : recoveryPoints) {
+            if(Math.random() < 0.7) {
+                platforms.add(new Platform(
+                        point[0] + (Math.random() * 200 - 100),
+                        point[1] + (Math.random() * 200 - 100),
+                        Constants.PLATFORM_WIDTH - 70,
+                        Constants.PLATFORM_HEIGHT
+                ));
+            }
+        }
     }
 
     private void update() {
@@ -156,16 +244,19 @@ public class GameEngine {
     }
 
     private void updateGame() {
-        // Handle input
         if (inputManager.isKeyPressed(KeyCode.LEFT)) {
             player.moveLeft();
         }
         if (inputManager.isKeyPressed(KeyCode.RIGHT)) {
             player.moveRight();
         }
-        if (inputManager.isKeyPressed(KeyCode.UP)) {
-            System.out.println("Attempting to jump");
+
+        if (inputManager.isKeyPressed(KeyCode.UP) && !jumpPressed) {
             player.jump();
+            jumpPressed = true;
+        }
+        if (!inputManager.isKeyPressed(KeyCode.UP)) {
+            jumpPressed = false;
         }
 
         player.update();
@@ -205,36 +296,34 @@ public class GameEngine {
     }
 
     private void renderGame() {
-        // Draw the background to cover the entire level size (not just the window)
-        gc.save();
-        gc.translate(-camera.getX(), -camera.getY()); // Fix camera to move relative to the player but keep the background static
-        drawBackground(gc, Constants.LEVEL_WIDTH, Constants.LEVEL_HEIGHT);
-        gc.restore();
+        if (backgroundImage != null) {
+            double bgX = -camera.getX() * 0.5;
+            double bgY = -camera.getY() * 0.3;
 
-        // Render platforms and other elements with camera translation
+            for (double y = bgY % backgroundImage.getHeight();
+                 y < Constants.WINDOW_HEIGHT;
+                 y += backgroundImage.getHeight()) {
+
+                for (double x = bgX % backgroundImage.getWidth();
+                     x < Constants.WINDOW_WIDTH;
+                     x += backgroundImage.getWidth()) {
+
+                    gc.drawImage(backgroundImage, x, y,
+                            backgroundImage.getWidth(), backgroundImage.getHeight());
+                }
+            }
+        }
+
         gc.save();
         gc.translate(-camera.getX(), -camera.getY());
+
         for (Platform platform : platforms) {
             platform.render(gc);
         }
 
-
-        // Render the player directly without translation so it moves on the background
         player.render(gc);
+
         gc.restore();
-    }
-
-
-
-    private void drawBackground(GraphicsContext gc, double levelWidth, double levelHeight) {
-        try {
-            if (backgroundImage != null) {
-                gc.drawImage(backgroundImage, 0, 0, levelWidth, levelHeight);
-            }
-        } catch (Exception e) {
-            System.err.println("Error drawing background: " + e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     private void renderPauseScreen() {
