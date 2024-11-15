@@ -53,7 +53,7 @@ public class GameEngine {
 
         // Load background image
         try {
-            backgroundImage = new Image(getClass().getResource("/images/background.png").toString());
+            backgroundImage = new Image(getClass().getResource("/images/persianGarden.png").toString());
             System.out.println("Background image loaded successfully");
         } catch (Exception e) {
             System.err.println("Background image loading failed: " + e.getMessage());
@@ -63,7 +63,7 @@ public class GameEngine {
         Pane root = new Pane(canvas);
         Scene scene = new Scene(root);
 
-        // 키 입력 처리 수정
+        // Key input handling
         scene.setOnKeyPressed(e -> {
             inputManager.handleKeyPress(e.getCode());
             handleKeyPress(e.getCode());
@@ -129,14 +129,19 @@ public class GameEngine {
     private void initializePlatforms() {
         platforms = new ArrayList<>();
         platforms.add(new Platform(0, Constants.LEVEL_HEIGHT - 20, Constants.LEVEL_WIDTH, 20));
-        platforms.add(new Platform(600, 400, 150, 20));
-        platforms.add(new Platform(900, 350, 200, 20));
-        platforms.add(new Platform(1200, 350, 150, 20));
-        platforms.add(new Platform(1500, 450, 200, 20));
-        platforms.add(new Platform(1800, 400, 150, 20));
-        platforms.add(new Platform(2100, 300, 200, 20));
-        platforms.add(new Platform(2400, 450, 150, 20));
-        platforms.add(new Platform(2700, 350, 200, 20));
+        platforms.add(new Platform(600, 50, 200, 20));
+        platforms.add(new Platform(450, 150, 50, 20));
+        platforms.add(new Platform(350, 300, 50, 20));
+        platforms.add(new Platform(250, 450, 50, 20));
+        platforms.add(new Platform(150, 600, 50, 20));
+        platforms.add(new Platform(0, 750, 100, 20));
+        platforms.add(new Platform(150, 900, 100, 20));
+        platforms.add(new Platform(300, 1050, 100, 20));
+        platforms.add(new Platform(500, 1200, 100, 20));
+        platforms.add(new Platform(650, 1350, 150, 20));
+        platforms.add(new Platform(450, 1500, 150, 20));
+        platforms.add(new Platform(200, 1650, 150, 20));
+        platforms.add(new Platform(0, 1800, 150, 20));
     }
 
     private void update() {
@@ -200,29 +205,36 @@ public class GameEngine {
     }
 
     private void renderGame() {
-        // Render background
-        if (backgroundImage != null) {
-            double bgX = -camera.getX() * 0.5;
-            double currentX = bgX % backgroundImage.getWidth();
-            if (currentX > 0) currentX -= backgroundImage.getWidth();
+        // Draw the background to cover the entire level size (not just the window)
+        gc.save();
+        gc.translate(-camera.getX(), -camera.getY()); // Fix camera to move relative to the player but keep the background static
+        drawBackground(gc, Constants.LEVEL_WIDTH, Constants.LEVEL_HEIGHT);
+        gc.restore();
 
-            while (currentX < Constants.WINDOW_WIDTH) {
-                gc.drawImage(backgroundImage, currentX, 0,
-                        backgroundImage.getWidth(), Constants.WINDOW_HEIGHT);
-                currentX += backgroundImage.getWidth();
-            }
-        }
-
+        // Render platforms and other elements with camera translation
         gc.save();
         gc.translate(-camera.getX(), -camera.getY());
-
         for (Platform platform : platforms) {
             platform.render(gc);
         }
 
-        player.render(gc);
 
+        // Render the player directly without translation so it moves on the background
+        player.render(gc);
         gc.restore();
+    }
+
+
+
+    private void drawBackground(GraphicsContext gc, double levelWidth, double levelHeight) {
+        try {
+            if (backgroundImage != null) {
+                gc.drawImage(backgroundImage, 0, 0, levelWidth, levelHeight);
+            }
+        } catch (Exception e) {
+            System.err.println("Error drawing background: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void renderPauseScreen() {

@@ -4,8 +4,8 @@ public class Constants {
     public static final int WINDOW_WIDTH = 800;
     public static final int WINDOW_HEIGHT = 600;
 
-    public static final double LEVEL_WIDTH = 3000;
-    public static final double LEVEL_HEIGHT = 600;
+    public static final double LEVEL_WIDTH = 800;
+    public static final double LEVEL_HEIGHT = 2000;
 
     public static final double PLAYER_SPEED = 4.0;
     public static final double GRAVITY = 0.6;
