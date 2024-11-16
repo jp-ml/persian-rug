@@ -138,98 +138,133 @@ public class GameEngine {
         platforms.add(new Platform(600, 6700, Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT));
         platforms.add(new Platform(900, 6400, Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT));
 
-        double currentX = 1300;
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             platforms.add(new Platform(
-                    currentX + (i * 400),
-                    6100 - (i * 200),
+                    1200 + (i * 400),
+                    6200 - (i * 200),
                     Constants.PLATFORM_WIDTH - 30,
                     Constants.PLATFORM_HEIGHT
             ));
-        }
 
-        currentX = 3300;
-        for(int i = 0; i < 6; i++) {
-            platforms.add(new Platform(
-                    currentX - (i * 350),
-                    5100 - (i * 250),
-                    Constants.PLATFORM_WIDTH - 20,
-                    Constants.PLATFORM_HEIGHT
-            ));
-
-            if(i % 2 == 0) {
+            if (i % 2 == 0) {
                 platforms.add(new Platform(
-                        currentX - (i * 350) - 175,
-                        5100 - (i * 250) + 125,
+                        1200 + (i * 400) + 200,
+                        6200 - (i * 200) + 100,
                         Constants.PLATFORM_WIDTH - 80,
                         Constants.PLATFORM_HEIGHT
                 ));
             }
         }
 
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             platforms.add(new Platform(
-                    1500 + (i * 500),
-                    3800 - (i * 200),
-                    Constants.PLATFORM_WIDTH - 50,
-                    Constants.PLATFORM_HEIGHT
-            ));
-        }
-
-        for(int i = 0; i < 5; i++) {
-            platforms.add(new Platform(
-                    3500 + (i * 450),
-                    3000 - (i * 180),
-                    Constants.PLATFORM_WIDTH - 40,
+                    3600 - (i * 350),
+                    5200 - (i * 250),
+                    Constants.PLATFORM_WIDTH - 20,
                     Constants.PLATFORM_HEIGHT
             ));
 
-            if(i % 2 == 1) {
+            if (i % 2 == 0) {
                 platforms.add(new Platform(
-                        3500 + (i * 450) + 225,
-                        3000 - (i * 180) - 90,
-                        Constants.PLATFORM_WIDTH - 90, // 매우 작은 플랫폼
-                        Constants.PLATFORM_HEIGHT
-                ));
-            }
-        }
-
-        for(int i = 0; i < 6; i++) {
-            double xOffset = (i % 2 == 0) ? 0 : 300;
-            platforms.add(new Platform(
-                    5800 + xOffset + (i * 400),
-                    2200 - (i * 150),
-                    Constants.PLATFORM_WIDTH - 60,
-                    Constants.PLATFORM_HEIGHT
-            ));
-        }
-
-        platforms.add(new Platform(8000, 1500, Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT));
-        platforms.add(new Platform(8500, 1300, Constants.PLATFORM_WIDTH - 40, Constants.PLATFORM_HEIGHT));
-        platforms.add(new Platform(9000, 1100, Constants.PLATFORM_WIDTH - 30, Constants.PLATFORM_HEIGHT));
-
-        platforms.add(new Platform(9400, 1000, Constants.PLATFORM_WIDTH * 2, Constants.PLATFORM_HEIGHT));
-
-        addRecoveryPlatforms();
-    }
-
-    private void addRecoveryPlatforms() {
-        double[][] recoveryPoints = {
-                {2000, 5500}, {4000, 4500}, {6000, 3500},
-                {3000, 4000}, {5000, 2500}, {7000, 2000},
-                {2500, 5000}, {4500, 3500}, {6500, 2500}
-        };
-
-        for(double[] point : recoveryPoints) {
-            if(Math.random() < 0.7) {
-                platforms.add(new Platform(
-                        point[0] + (Math.random() * 200 - 100),
-                        point[1] + (Math.random() * 200 - 100),
+                        3600 - (i * 350) - 175,
+                        5200 - (i * 250) + 125,
                         Constants.PLATFORM_WIDTH - 70,
                         Constants.PLATFORM_HEIGHT
                 ));
             }
         }
+
+        for (int i = 0; i < 6; i++) {
+            platforms.add(new Platform(
+                    2000 + (i * 400),
+                    4000 - (i * 200),
+                    Constants.PLATFORM_WIDTH - 40,
+                    Constants.PLATFORM_HEIGHT
+            ));
+
+            if (i % 2 == 1) {
+                platforms.add(new Platform(
+                        2000 + (i * 400) + 200,
+                        4000 - (i * 200) - 100,
+                        Constants.PLATFORM_WIDTH - 90,
+                        Constants.PLATFORM_HEIGHT
+                ));
+            }
+        }
+
+        for (int i = 0; i < 5; i++) {
+            platforms.add(new Platform(
+                    4400 - (i * 380),
+                    3000 - (i * 220),
+                    Constants.PLATFORM_WIDTH - 35,
+                    Constants.PLATFORM_HEIGHT
+            ));
+
+            if (i % 2 == 0) {
+                platforms.add(new Platform(
+                        4400 - (i * 380) - 190,
+                        3000 - (i * 220) + 110,
+                        Constants.PLATFORM_WIDTH - 85,
+                        Constants.PLATFORM_HEIGHT
+                ));
+            }
+        }
+
+        for (int i = 0; i < 8; i++) {
+            double xOffset = (i % 2 == 0) ? -200 : 200;
+            platforms.add(new Platform(
+                    2800 + xOffset + (i * 300),
+                    2400 - (i * 180),
+                    Constants.PLATFORM_WIDTH - 45,
+                    Constants.PLATFORM_HEIGHT
+            ));
+
+            if (i % 3 == 0) {
+                platforms.add(new Platform(
+                        2800 + xOffset + (i * 300) + 150,
+                        2400 - (i * 180) - 90,
+                        Constants.PLATFORM_WIDTH - 100,
+                        Constants.PLATFORM_HEIGHT
+                ));
+            }
+        }
+
+        for (int i = 0; i < 6; i++) {
+            platforms.add(new Platform(
+                    4500 + (i * 350),
+                    1800 - (i * 150),
+                    Constants.PLATFORM_WIDTH - 50,
+                    Constants.PLATFORM_HEIGHT
+            ));
+        }
+
+        platforms.add(new Platform(6500, 1000, Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(6800, 800, Constants.PLATFORM_WIDTH - 40, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(7100, 600, Constants.PLATFORM_WIDTH - 30, Constants.PLATFORM_HEIGHT));
+
+        platforms.add(new Platform(7200, 500, Constants.PLATFORM_WIDTH * 2, Constants.PLATFORM_HEIGHT));
+
+        platforms.add(new Platform(6500, 1000, Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(6800, 800, Constants.PLATFORM_WIDTH - 40, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(7100, 600, Constants.PLATFORM_WIDTH - 30, Constants.PLATFORM_HEIGHT));
+
+        platforms.add(new Platform(6800, 500, Constants.PLATFORM_WIDTH - 60, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(6400, 450, Constants.PLATFORM_WIDTH - 70, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(5900, 400, Constants.PLATFORM_WIDTH - 70, Constants.PLATFORM_HEIGHT));
+
+        platforms.add(new Platform(5300, 380, Constants.PLATFORM_WIDTH - 80, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(4700, 370, Constants.PLATFORM_WIDTH - 80, Constants.PLATFORM_HEIGHT));
+
+        platforms.add(new Platform(4100, 370, Constants.PLATFORM_WIDTH - 80, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(3500, 360, Constants.PLATFORM_WIDTH - 100, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(2900, 350, Constants.PLATFORM_WIDTH - 100, Constants.PLATFORM_HEIGHT));
+
+        platforms.add(new Platform(2300, 300, Constants.PLATFORM_WIDTH -100, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(1700, 300, Constants.PLATFORM_WIDTH -110, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(1100, 300, Constants.PLATFORM_WIDTH -110, Constants.PLATFORM_HEIGHT));
+
+        platforms.add(new Platform(200, 300, Constants.PLATFORM_WIDTH * 2, Constants.PLATFORM_HEIGHT));
+
     }
 
     private void update() {
