@@ -4,9 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="26004743-d471-4977-a5a3-6fba98f88160" name="Changes" comment="Add configuration files">
+    <list default="true" id="26004743-d471-4977-a5a3-6fba98f88160" name="Changes" comment="Add a test image">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/persianrug/engine/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/persianrug/engine/GameEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/symbol.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/symbol.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/engine/Camera.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/engine/Camera.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/engine/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/engine/Menu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/entity/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/entity/Player.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/utils/Constants.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/utils/Constants.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,12 +38,12 @@
     &quot;assignee&quot;: &quot;juhyun-park-bcit&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/juhyun-park-bcit/COMP-2522-202430-Term-Project-persianRug.git",
-    "accountId": "8946f787-2a44-4f8d-9992-f4e68c906077"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/juhyun-park-bcit/COMP-2522-202430-Term-Project-persianRug.git&quot;,
+    &quot;accountId&quot;: &quot;8946f787-2a44-4f8d-9992-f4e68c906077&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -73,24 +81,12 @@
       <recent name="" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\PJ\Desktop\CST\001\COMP-2522-202430-Term-Project-persianRug\src\main\java\com\persianrug\entity" />
       <recent name="C:\Users\PJ\Desktop\CST\001\java\term-project\COMP-2522-202430-Term-Project-persianRug\src\main\resources\images" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="com.example.comp2522202430termprojectpersianrug" />
     </key>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -113,6 +109,7 @@
       <workItem from="1727319206683" duration="3000" />
       <workItem from="1731568976970" duration="6312000" />
       <workItem from="1731578345608" duration="1091000" />
+      <workItem from="1731742454210" duration="5940000" />
     </task>
     <task id="LOCAL-00001" summary="Hello World!">
       <option name="closed" value="true" />
@@ -186,7 +183,23 @@
       <option name="project" value="LOCAL" />
       <updated>1731571452697</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Complete map and platforms on the right places">
+      <option name="closed" value="true" />
+      <created>1731745730902</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1731745730902</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Add a test image">
+      <option name="closed" value="true" />
+      <created>1731745813550</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1731745813550</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -202,6 +215,8 @@
     <MESSAGE value="Add Main file" />
     <MESSAGE value="Delete unnecessary files" />
     <MESSAGE value="Add configuration files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add configuration files" />
+    <MESSAGE value="Complete map and platforms on the right places" />
+    <MESSAGE value="Add a test image" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add a test image" />
   </component>
 </project>
