@@ -40,7 +40,7 @@ public class GameEngine {
     private boolean showingFailScreen = false;
     private long failStartTime = 0;
     private static final long FAIL_SCREEN_DURATION = 5000;
-    private int totalQuestions = 7;
+    private int totalQuestions;
     private int correctAnswers = 0;
     private boolean gameCompleted = false;
 
@@ -230,7 +230,7 @@ public class GameEngine {
         platforms.add(new Platform(4700, 370, Constants.PLATFORM_WIDTH - 80, Constants.PLATFORM_HEIGHT));
 
         platforms.add(new Platform(4100, 370, Constants.PLATFORM_WIDTH - 80, Constants.PLATFORM_HEIGHT));
-        platforms.add(new Platform(3500, 360, Constants.PLATFORM_WIDTH - 100, Constants.PLATFORM_HEIGHT));
+        platforms.add(new Platform(3500, 360, Constants.PLATFORM_WIDTH - 80, Constants.PLATFORM_HEIGHT));
         platforms.add(new Platform(2900, 350, Constants.PLATFORM_WIDTH - 100, Constants.PLATFORM_HEIGHT));
 
         platforms.add(new Platform(2300, 300, Constants.PLATFORM_WIDTH -100, Constants.PLATFORM_HEIGHT));
@@ -239,32 +239,99 @@ public class GameEngine {
 
         platforms.add(new Platform(200, 300, Constants.PLATFORM_WIDTH * 2, Constants.PLATFORM_HEIGHT));
     }
+
     private void initializeItems() {
+        totalQuestions = 20;
+
         Quiz[] quizzes = {
-                new Quiz("2 + 2 = ?",
-                        new String[]{"3", "4", "5", "6"}, 1),
-                new Quiz("What color is the sky?",
-                        new String[]{"Red", "Green", "Blue", "Yellow"}, 2),
-                new Quiz("Java was created in what year?",
-                        new String[]{"1991", "1995", "1999", "2000"}, 1),
-                new Quiz("What is the capital of Korea?",
-                        new String[]{"Beijing", "Tokyo", "Seoul", "Bangkok"}, 2),
-                new Quiz("What is 5 * 5?",
-                        new String[]{"20", "25", "30", "35"}, 1),
-                new Quiz("Which planet is closest to the Sun?",
-                        new String[]{"Earth", "Venus", "Mercury", "Mars"}, 2),
-                new Quiz("What is the largest ocean?",
-                        new String[]{"Atlantic", "Indian", "Pacific", "Arctic"}, 2)
+                // Inheritance
+                new Quiz("Which keyword is used to inherit a class in Java?",
+                        new String[]{"extends", "implements", "inherits", "using"}, 0),
+                new Quiz("What type of inheritance is supported by Java?",
+                        new String[]{"Multiple", "Single", "Hybrid", "All of above"}, 1),
+
+                // Abstraction
+                new Quiz("Which keyword is used to declare an abstract class?",
+                        new String[]{"abstract", "virtual", "sealed", "extends"}, 0),
+                new Quiz("Can abstract class have constructor in Java?",
+                        new String[]{"Yes", "No", "Depends on JVM", "Only static"}, 0),
+
+                // Interfaces
+                new Quiz("Can an interface contain concrete methods?",
+                        new String[]{"No", "Yes, with default", "Only static", "Only final"}, 1),
+                new Quiz("Which access modifier is allowed for interface methods?",
+                        new String[]{"private", "protected", "package-private", "public"}, 3),
+
+                // Polymorphism
+                new Quiz("Which type of polymorphism is method overloading?",
+                        new String[]{"Runtime", "Compile-time", "Dynamic", "Multi-level"}, 1),
+                new Quiz("What enables runtime polymorphism in Java?",
+                        new String[]{"Interfaces", "Method Overriding", "Inheritance", "All above"}, 3),
+
+                // Generics
+                new Quiz("What symbol is used for generic type parameter?",
+                        new String[]{"<>", "{}", "[]", "()"}, 0),
+                new Quiz("What is type erasure in Java generics?",
+                        new String[]{"Runtime check", "Compile removal", "Type conversion", "Error handling"}, 1),
+
+                // Data Structures
+                new Quiz("Which collection doesn't allow duplicates?",
+                        new String[]{"ArrayList", "LinkedList", "HashSet", "Vector"}, 2),
+                new Quiz("Which interface is parent of Set interface?",
+                        new String[]{"List", "Collection", "Map", "Queue"}, 1),
+
+                // Inner Classes
+                new Quiz("Which is not a type of inner class?",
+                        new String[]{"Static", "Local", "Anonymous", "Virtual"}, 3),
+                new Quiz("Can inner class be declared as private?",
+                        new String[]{"Yes", "No", "Only static", "Only final"}, 0),
+
+                // Complexity
+                new Quiz("What is ArrayList's search complexity?",
+                        new String[]{"O(1)", "O(n)", "O(log n)", "O(n²)"}, 1),
+                new Quiz("QuickSort's average complexity is:",
+                        new String[]{"O(n)", "O(n log n)", "O(n²)", "O(log n)"}, 1),
+
+                // Sorting
+                new Quiz("Which sort is most memory efficient?",
+                        new String[]{"Merge Sort", "Quick Sort", "Heap Sort", "Bubble Sort"}, 3),
+                new Quiz("Which sorting algorithm is stable?",
+                        new String[]{"QuickSort", "HeapSort", "MergeSort", "SelectionSort"}, 2),
+
+                // Advanced Concepts
+                new Quiz("What is marker interface in Java?",
+                        new String[]{"Empty interface", "Abstract interface", "Static interface", "Final interface"}, 0),
+                new Quiz("Who teaches 2024 Fall COMP2522 in BCIT?",
+                        new String[]{"Asif", "Brenda", "Alireza", "Chris"}, 3)
         };
 
-        items.add(new Item(1300, 6000, "/images/symbol.png", quizzes[0]));
-        items.add(new Item(3400, 5000, "/images/symbol.png", quizzes[1]));
-        items.add(new Item(2200, 3800, "/images/symbol.png", quizzes[2]));
-        items.add(new Item(4200, 2800, "/images/symbol.png", quizzes[3]));
-        items.add(new Item(2500, 2000, "/images/symbol.png", quizzes[4]));
-        items.add(new Item(3500, 1500, "/images/symbol.png", quizzes[5]));
-        items.add(new Item(2500, 500, "/images/symbol.png", quizzes[6]));
+        items.add(new Item(1200 + 200, 6200 - 50, "/images/symbol.png", quizzes[0]));
+        items.add(new Item(2000, 6000 - 50, "/images/symbol.png", quizzes[1]));
+        items.add(new Item(2800, 5800 - 50, "/images/symbol.png", quizzes[2]));
+
+        items.add(new Item(3400, 5200 - 50, "/images/symbol.png", quizzes[3]));
+        items.add(new Item(3000, 4800 - 50, "/images/symbol.png", quizzes[4]));
+        items.add(new Item(2600, 4400 - 50, "/images/symbol.png", quizzes[5]));
+
+        items.add(new Item(2000, 4000 - 50, "/images/symbol.png", quizzes[6]));
+        items.add(new Item(2400, 3800 - 50, "/images/symbol.png", quizzes[7]));
+        items.add(new Item(2800, 3600 - 50, "/images/symbol.png", quizzes[8]));
+        items.add(new Item(3200, 3400 - 50, "/images/symbol.png", quizzes[9]));
+
+        items.add(new Item(6500, 1000 - 50, "/images/symbol.png", quizzes[10]));
+        items.add(new Item(5300, 380 - 50, "/images/symbol.png", quizzes[11]));
+        items.add(new Item(4700, 370 - 50, "/images/symbol.png", quizzes[12]));
+
+        items.add(new Item(4100, 370 - 50, "/images/symbol.png", quizzes[13]));
+        items.add(new Item(3500, 360 - 50, "/images/symbol.png", quizzes[14]));
+        items.add(new Item(2900, 350 - 50, "/images/symbol.png", quizzes[15]));
+
+        items.add(new Item(2300, 300 - 50, "/images/symbol.png", quizzes[16]));
+        items.add(new Item(1700, 300 - 50, "/images/symbol.png", quizzes[17]));
+        items.add(new Item(1100, 300 - 50, "/images/symbol.png", quizzes[18]));
+        items.add(new Item(200, 300 - 50, "/images/symbol.png", quizzes[19]));
     }
+
     private void handleKeyPress(KeyCode code) {
         switch (gameState) {
             case MENU:
@@ -437,6 +504,8 @@ public class GameEngine {
             }
         }
 
+        gc.setFill(new Color(0, 0, 0, 0.7));
+        gc.fillRect(10, 10, 150, 40);
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("Arial Bold", 24));
         gc.setTextAlign(TextAlignment.LEFT);
@@ -463,7 +532,7 @@ public class GameEngine {
             renderFailScreen();
         }
 
-        if (gameCompleted) {
+        if (correctAnswers == totalQuestions) {
             renderCompletionMessage();
         }
 
@@ -500,7 +569,7 @@ public class GameEngine {
 
         gc.setFill(Color.LIGHTGRAY);
         gc.setFont(new Font("Arial", 16));
-        gc.fillText("Use UP/DOWN to select, SPACE to answer",
+        gc.fillText("Use UP/DOWN to select, ENTER to answer",
                 Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 200);
     }
 
@@ -508,12 +577,11 @@ public class GameEngine {
         gc.setFill(new Color(0, 0, 0, 0.8));
         gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 
-        gc.setFill(Color.BLACK);
-        gc.setFont(new Font("Arial", 65));
+        gc.setFill(Color.RED);
+        gc.setFont(new Font("Arial", 70));
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Failed!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2);
+        gc.fillText("Failed.", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2);
 
-        // 남은 시간 표시
         gc.setFill(Color.WHITESMOKE);
         gc.setFont(new Font("Arial", 20));
         long remainingTime = (FAIL_SCREEN_DURATION - (System.currentTimeMillis() - failStartTime)) / 1000 + 1;
@@ -535,21 +603,19 @@ public class GameEngine {
     }
 
     private void renderCompletionMessage() {
-        gc.setFill(new Color(0, 0, 0, 0.7));
+        gc.setFill(new Color(0, 0, 0, 0.8));
         gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 
-        gc.setTextAlign(TextAlignment.CENTER);
 
         gc.setFill(Color.GOLD);
         gc.setFont(new Font("Arial Bold", 72));
-        gc.fillText("Congratulations!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 - 40);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText("Congratulations!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 - 60);
 
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("Arial", 36));
-        gc.fillText("You completed all quizzes!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 40);
-
-        gc.setFont(new Font("Arial", 24));
-        gc.fillText("Press ESC to return to menu", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 100);
+        gc.fillText("You've mastered Java OOP!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 20);
+        gc.fillText("20/20 Correct Answers", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 70);
     }
 
     private void resetGame() {

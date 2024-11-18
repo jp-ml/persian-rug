@@ -9,8 +9,8 @@ public class Constants {
 
     public static final double PLAYER_SPEED = 6.5;
     public static final double GRAVITY = 0.6;
-    public static final double JUMP_FORCE = -18.0;
-    public static final double DOUBLE_JUMP_FORCE = -17.0;
+    public static final double JUMP_FORCE = -18.5;
+    public static final double DOUBLE_JUMP_FORCE = -17.5;
     public static final double FRICTION = 0.8;
 
     public static final double PLATFORM_WIDTH = 180;
