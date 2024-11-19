@@ -59,8 +59,6 @@ public class GameEngine {
                 Constants.LEVEL_HEIGHT - Constants.PLAYER_HEIGHT - 20
         );
 
-
-
         // Initialize components
         inputManager = new InputManager();
         camera = new Camera();
@@ -107,6 +105,349 @@ public class GameEngine {
                 render();
             }
         };
+    }
+    private void handleKeyPress(KeyCode code) {
+        switch (gameState) {
+            case MENU:
+                handleMenuInput(code);
+                break;
+            case PLAYING:
+                if (code == KeyCode.ESCAPE) {
+                    gameState = GameState.PAUSED;
+                    menu.setPauseMenuOptions();
+                }
+                break;
+            case PAUSED:
+                handlePauseMenuInput(code);
+                break;
+        }
+    }
+
+    private void handleMenuInput(KeyCode code) {
+        switch (code) {
+            case UP:
+                menu.moveUp();
+                break;
+            case DOWN:
+                menu.moveDown();
+                break;
+            case ENTER:
+                switch(menu.getSelectedOption()) {
+                    case 0:  // New Game
+                        gameState = GameState.PLAYING;
+                        resetGame();
+                        break;
+                    case 1:  // Load Game
+                        if (GameSaveManager.saveExists()) {
+                            loadGame();
+                            gameState = GameState.PLAYING;
+                        }
+                        break;
+                    case 2:  // Exit
+                        javafx.application.Platform.exit();
+                        break;
+                }
+                break;
+        }
+    }
+
+    private void handlePauseMenuInput(KeyCode code) {
+        switch (code) {
+            case UP:
+                menu.moveUp();
+                break;
+            case DOWN:
+                menu.moveDown();
+                break;
+            case ENTER:
+                switch(menu.getSelectedOption()) {
+                    case 0:  // Resume
+                        gameState = GameState.PLAYING;
+                        break;
+                    case 1:  // Save Game
+                        saveGame();
+                        break;
+                    case 2:  // Back to Menu
+                        gameState = GameState.MENU;
+                        menu.setMainMenuOptions();
+                        resetGame();
+                        break;
+                }
+                break;
+        }
+    }
+
+    private void saveGame() {
+        GameSaveManager.GameSave save = new GameSaveManager.GameSave(
+                player.getX(),
+                player.getY(),
+                correctAnswers,
+                items
+        );
+        GameSaveManager.saveGame(save);
+    }
+
+    private void loadGame() {
+        GameSaveManager.GameSave save = GameSaveManager.loadGame();
+        if (save != null) {
+            player = new Player(save.playerX, save.playerY);
+            correctAnswers = save.correctAnswers;
+
+            // 아이템 상태 복원
+            for (int i = 0; i < save.collectedItems.length && i < items.size(); i++) {
+                if (save.collectedItems[i]) {
+                    items.get(i).collect();
+                }
+            }
+        }
+    }
+
+    private void update() {
+        switch (gameState) {
+            case PLAYING:
+                updateGame();
+                break;
+            case MENU:
+            case PAUSED:
+                break;
+        }
+    }
+
+    private void updateGame() {
+        if (showingFailScreen) {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - failStartTime >= FAIL_SCREEN_DURATION) {
+                showingFailScreen = false;
+                gameState = GameState.MENU;
+                resetGame();
+            }
+            return;
+        }
+
+        if (!showingQuiz) {
+            if (inputManager.isKeyPressed(KeyCode.LEFT)) {
+                player.moveLeft();
+            }
+            if (inputManager.isKeyPressed(KeyCode.RIGHT)) {
+                player.moveRight();
+            }
+            if (inputManager.isKeyPressed(KeyCode.UP) && !jumpPressed) {
+                player.jump();
+                jumpPressed = true;
+            }
+            if (!inputManager.isKeyPressed(KeyCode.UP)) {
+                jumpPressed = false;
+            }
+
+            for (Item item : items) {
+                if (!item.isCollected() && player.intersects(item)) {
+                    currentQuizItem = item;
+                    showingQuiz = true;
+                    selectedOption = 0;
+                    break;
+                }
+            }
+
+            player.update();
+            camera.update(player);
+            checkCollisions();
+        } else {
+            if (inputManager.isKeyPressed(KeyCode.UP) && !jumpPressed) {
+                selectedOption = (selectedOption - 1 + 4) % 4;
+                jumpPressed = true;
+            } else if (inputManager.isKeyPressed(KeyCode.DOWN) && !jumpPressed) {
+                selectedOption = (selectedOption + 1) % 4;
+                jumpPressed = true;
+            } else if (inputManager.isKeyPressed(KeyCode.ENTER) && !jumpPressed) {
+                if (currentQuizItem.getQuiz().checkAnswer(selectedOption)) {
+                    currentQuizItem.collect();
+                    showingQuiz = false;
+                    currentQuizItem = null;
+                    correctAnswers++;
+
+                    if (correctAnswers == totalQuestions) {
+                        gameCompleted = true;
+                    }
+                } else {
+                    showingFailScreen = true;
+                    failStartTime = System.currentTimeMillis();
+                    showingQuiz = false;
+                }
+                jumpPressed = true;
+            }
+
+            if (!inputManager.isKeyPressed(KeyCode.UP) &&
+                    !inputManager.isKeyPressed(KeyCode.DOWN) &&
+                    !inputManager.isKeyPressed(KeyCode.ENTER)) {
+                jumpPressed = false;
+            }
+        }
+    }
+    private void render() {
+        gc.clearRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+
+        switch (gameState) {
+            case MENU:
+                menu.render(gc);
+                break;
+            case PLAYING:
+                renderGame();
+                break;
+            case PAUSED:
+                renderGame();
+                renderPauseScreen();
+                break;
+        }
+    }
+
+    private void renderGame() {
+        if (backgroundImage != null) {
+            double bgX = -camera.getX() * 0.5;
+            double bgY = -camera.getY() * 0.3;
+
+            for (double y = bgY % backgroundImage.getHeight();
+                 y < Constants.WINDOW_HEIGHT;
+                 y += backgroundImage.getHeight()) {
+
+                for (double x = bgX % backgroundImage.getWidth();
+                     x < Constants.WINDOW_WIDTH;
+                     x += backgroundImage.getWidth()) {
+
+                    gc.drawImage(backgroundImage, x, y,
+                            backgroundImage.getWidth(), backgroundImage.getHeight());
+                }
+            }
+        }
+
+        gc.setFill(new Color(0, 0, 0, 0.7));
+        gc.fillRect(10, 10, 150, 40);
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("Arial Bold", 24));
+        gc.setTextAlign(TextAlignment.LEFT);
+        gc.fillText("Score: " + correctAnswers + "/" + totalQuestions, 20, 40);
+
+        gc.save();
+        gc.translate(-camera.getX(), -camera.getY());
+
+        for (Platform platform : platforms) {
+            platform.render(gc);
+        }
+
+        for (Item item : items) {
+            item.render(gc);
+        }
+
+        player.render(gc);
+
+        gc.restore();
+
+        if (showingQuiz && currentQuizItem != null) {
+            renderQuiz();
+        } else if (showingFailScreen) {
+            renderFailScreen();
+        }
+
+        if (correctAnswers == totalQuestions) {
+            renderCompletionMessage();
+        }
+    }
+
+    private void renderQuiz() {
+        gc.setFill(new Color(0, 0, 0, 0.7));
+        gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("Arial", 24));
+        gc.setTextAlign(TextAlignment.CENTER);
+
+        Quiz quiz = currentQuizItem.getQuiz();
+        gc.fillText(quiz.getQuestion(),
+                Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 - 100);
+
+        String[] options = quiz.getOptions();
+        for (int i = 0; i < options.length; i++) {
+            if (i == selectedOption) {
+                gc.setFill(Color.YELLOW);
+            } else {
+                gc.setFill(Color.WHITE);
+            }
+            gc.fillText((i + 1) + ". " + options[i],
+                    Constants.WINDOW_WIDTH/2,
+                    Constants.WINDOW_HEIGHT/2 + i * 40);
+        }
+
+        gc.setFill(Color.LIGHTGRAY);
+        gc.setFont(new Font("Arial", 16));
+        gc.fillText("Use UP/DOWN to select, ENTER to answer",
+                Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 200);
+    }
+
+    private void renderFailScreen() {
+        gc.setFill(new Color(0, 0, 0, 0.8));
+        gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+
+        gc.setFill(Color.RED);
+        gc.setFont(new Font("Arial", 70));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText("Failed!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2);
+
+        gc.setFill(Color.WHITESMOKE);
+        gc.setFont(new Font("Arial", 20));
+        long remainingTime = (FAIL_SCREEN_DURATION - (System.currentTimeMillis() - failStartTime)) / 1000 + 1;
+        gc.fillText("Returning to menu in " + remainingTime + " seconds",
+                Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 50);
+    }
+
+    private void renderPauseScreen() {
+        gc.setFill(new Color(0, 0, 0, 0.5));
+        gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+
+        menu.render(gc);
+    }
+
+    private void renderCompletionMessage() {
+        gc.setFill(new Color(0, 0, 0, 0.8));
+        gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+
+        gc.setFill(Color.GOLD);
+        gc.setFont(new Font("Arial Bold", 72));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText("Congratulations!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 - 60);
+
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("Arial", 36));
+        gc.fillText("You've mastered Java OOP!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 20);
+        gc.fillText("20/20 Correct Answers", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 70);
+
+        gc.setFont(new Font("Arial", 24));
+        gc.fillText("Press ESC for menu", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 140);
+    }
+    private void checkCollisions() {
+        player.setOnGround(false);
+
+        if (player.getY() + player.getHeight() >= Constants.LEVEL_HEIGHT - 20) {
+            player.setOnGround(true);
+        }
+
+        for (Platform platform : platforms) {
+            if (player.intersects(platform)) {
+                player.handlePlatformCollision(platform);
+            }
+        }
+    }
+
+    private void resetGame() {
+        showingQuiz = false;
+        showingFailScreen = false;
+        currentQuizItem = null;
+        selectedOption = 0;
+        correctAnswers = 0;
+        gameCompleted = false;
+
+        player = new Player(300, Constants.LEVEL_HEIGHT - Constants.PLAYER_HEIGHT - 20);
+
+        items.clear();
+        initializeItems();
     }
 
     private void initializePlatforms() {
@@ -330,304 +671,6 @@ public class GameEngine {
         items.add(new Item(1700, 300 - 50, "/images/symbol.png", quizzes[17]));
         items.add(new Item(1100, 300 - 50, "/images/symbol.png", quizzes[18]));
         items.add(new Item(200, 300 - 50, "/images/symbol.png", quizzes[19]));
-    }
-
-    private void handleKeyPress(KeyCode code) {
-        switch (gameState) {
-            case MENU:
-                handleMenuInput(code);
-                break;
-            case PLAYING:
-                if (code == KeyCode.ESCAPE) {
-                    gameState = GameState.PAUSED;
-                }
-                break;
-            case PAUSED:
-                if (code == KeyCode.ESCAPE) {
-                    gameState = GameState.PLAYING;
-                } else if (code == KeyCode.M) {
-                    gameState = GameState.MENU;
-                    resetGame();
-                }
-                break;
-        }
-    }
-
-    private void handleMenuInput(KeyCode code) {
-        switch (code) {
-            case UP:
-                menu.moveUp();
-                break;
-            case DOWN:
-                menu.moveDown();
-                break;
-            case ENTER:
-                if (menu.getSelectedOption() == 0) {
-                    gameState = GameState.PLAYING;
-                } else if (menu.getSelectedOption() == 2) {
-                    javafx.application.Platform.exit();
-                }
-                break;
-        }
-    }
-
-    private void update() {
-        switch (gameState) {
-            case PLAYING:
-                updateGame();
-                break;
-            case MENU:
-            case PAUSED:
-                break;
-        }
-    }
-
-    private void updateGame() {
-        if (showingFailScreen) {
-            long currentTime = System.currentTimeMillis();
-            if (currentTime - failStartTime >= FAIL_SCREEN_DURATION) {
-                showingFailScreen = false;
-                gameState = GameState.MENU;
-                resetGame();
-            }
-            return;
-        }
-
-        if (!showingQuiz) {
-            if (inputManager.isKeyPressed(KeyCode.LEFT)) {
-                player.moveLeft();
-            }
-            if (inputManager.isKeyPressed(KeyCode.RIGHT)) {
-                player.moveRight();
-            }
-            if (inputManager.isKeyPressed(KeyCode.UP) && !jumpPressed) {
-                player.jump();
-                jumpPressed = true;
-            }
-            if (!inputManager.isKeyPressed(KeyCode.UP)) {
-                jumpPressed = false;
-            }
-
-            for (Item item : items) {
-                if (!item.isCollected() && player.intersects(item)) {
-                    currentQuizItem = item;
-                    showingQuiz = true;
-                    selectedOption = 0;
-                    break;
-                }
-            }
-
-            player.update();
-            camera.update(player);
-            checkCollisions();
-        } else {
-            if (inputManager.isKeyPressed(KeyCode.UP) && !jumpPressed) {
-                selectedOption = (selectedOption - 1 + 4) % 4;
-                jumpPressed = true;
-            } else if (inputManager.isKeyPressed(KeyCode.DOWN) && !jumpPressed) {
-                selectedOption = (selectedOption + 1) % 4;
-                jumpPressed = true;
-            } else if (inputManager.isKeyPressed(KeyCode.ENTER) && !jumpPressed) {
-                if (currentQuizItem.getQuiz().checkAnswer(selectedOption)) {
-                    currentQuizItem.collect();
-                    showingQuiz = false;
-                    currentQuizItem = null;
-                    correctAnswers++;
-
-                    if (correctAnswers == totalQuestions) {
-                        gameCompleted = true;
-                    }
-
-                } else {
-                    showingFailScreen = true;
-                    failStartTime = System.currentTimeMillis();
-                    showingQuiz = false;
-                }
-                jumpPressed = true;
-            }
-
-            if (!inputManager.isKeyPressed(KeyCode.UP) &&
-                    !inputManager.isKeyPressed(KeyCode.DOWN) &&
-                    !inputManager.isKeyPressed(KeyCode.SPACE)) {
-                jumpPressed = false;
-            }
-        }
-    }
-
-    private void checkCollisions() {
-        player.setOnGround(false);
-
-        if (player.getY() + player.getHeight() >= Constants.LEVEL_HEIGHT - 20) {
-            player.setOnGround(true);
-        }
-
-        for (Platform platform : platforms) {
-            if (player.intersects(platform)) {
-                player.handlePlatformCollision(platform);
-            }
-        }
-    }
-
-    private void render() {
-        gc.clearRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-
-        switch (gameState) {
-            case MENU:
-                menu.render(gc);
-                break;
-            case PLAYING:
-                renderGame();
-                break;
-            case PAUSED:
-                renderGame();
-                renderPauseScreen();
-                break;
-        }
-    }
-
-    private void renderGame() {
-        if (backgroundImage != null) {
-            double bgX = -camera.getX() * 0.5;
-            double bgY = -camera.getY() * 0.3;
-
-            for (double y = bgY % backgroundImage.getHeight();
-                 y < Constants.WINDOW_HEIGHT;
-                 y += backgroundImage.getHeight()) {
-
-                for (double x = bgX % backgroundImage.getWidth();
-                     x < Constants.WINDOW_WIDTH;
-                     x += backgroundImage.getWidth()) {
-
-                    gc.drawImage(backgroundImage, x, y,
-                            backgroundImage.getWidth(), backgroundImage.getHeight());
-                }
-            }
-        }
-
-        gc.setFill(new Color(0, 0, 0, 0.7));
-        gc.fillRect(10, 10, 150, 40);
-        gc.setFill(Color.WHITE);
-        gc.setFont(new Font("Arial Bold", 24));
-        gc.setTextAlign(TextAlignment.LEFT);
-        gc.fillText("Score: " + correctAnswers + "/" + totalQuestions, 20, 40);
-
-        gc.save();
-        gc.translate(-camera.getX(), -camera.getY());
-
-        for (Platform platform : platforms) {
-            platform.render(gc);
-        }
-
-        for (Item item : items) {
-            item.render(gc);
-        }
-
-        player.render(gc);
-
-        gc.restore();
-
-        if (showingQuiz && currentQuizItem != null) {
-            renderQuiz();
-        } else if (showingFailScreen) {
-            renderFailScreen();
-        }
-
-        if (correctAnswers == totalQuestions) {
-            renderCompletionMessage();
-        }
-
-        if (showingQuiz && currentQuizItem != null) {
-            renderQuiz();
-        } else if (showingFailScreen) {
-            renderFailScreen();
-        }
-    }
-
-    private void renderQuiz() {
-        gc.setFill(new Color(0, 0, 0, 0.7));
-        gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-
-        gc.setFill(Color.WHITE);
-        gc.setFont(new Font("Arial", 24));
-        gc.setTextAlign(TextAlignment.CENTER);
-
-        Quiz quiz = currentQuizItem.getQuiz();
-        gc.fillText(quiz.getQuestion(),
-                Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 - 100);
-
-        String[] options = quiz.getOptions();
-        for (int i = 0; i < options.length; i++) {
-            if (i == selectedOption) {
-                gc.setFill(Color.BLACK);
-            } else {
-                gc.setFill(Color.WHITE);
-            }
-            gc.fillText((i + 1) + ". " + options[i],
-                    Constants.WINDOW_WIDTH/2,
-                    Constants.WINDOW_HEIGHT/2 + i * 40);
-        }
-
-        gc.setFill(Color.LIGHTGRAY);
-        gc.setFont(new Font("Arial", 16));
-        gc.fillText("Use UP/DOWN to select, ENTER to answer",
-                Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 200);
-    }
-
-    private void renderFailScreen() {
-        gc.setFill(new Color(0, 0, 0, 0.8));
-        gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-
-        gc.setFill(Color.RED);
-        gc.setFont(new Font("Arial", 70));
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Failed.", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2);
-
-        gc.setFill(Color.WHITESMOKE);
-        gc.setFont(new Font("Arial", 20));
-        long remainingTime = (FAIL_SCREEN_DURATION - (System.currentTimeMillis() - failStartTime)) / 1000 + 1;
-        gc.fillText("Returning to menu in " + remainingTime + " seconds",
-                Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 50);
-    }
-
-    private void renderPauseScreen() {
-        gc.setFill(new Color(0, 0, 0, 0.5));
-        gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-
-        gc.setFill(Color.WHITE);
-        gc.setFont(new Font("Arial", 36));
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("PAUSED", Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2);
-        gc.setFont(new Font("Arial", 18));
-        gc.fillText("Press ESC to resume", Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2 + 40);
-        gc.fillText("Press M for menu", Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2 + 70);
-    }
-
-    private void renderCompletionMessage() {
-        gc.setFill(new Color(0, 0, 0, 0.8));
-        gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-
-
-        gc.setFill(Color.GOLD);
-        gc.setFont(new Font("Arial Bold", 72));
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Congratulations!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 - 60);
-
-        gc.setFill(Color.WHITE);
-        gc.setFont(new Font("Arial", 36));
-        gc.fillText("You've mastered Java OOP!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 20);
-        gc.fillText("20/20 Correct Answers", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 70);
-    }
-
-    private void resetGame() {
-        showingQuiz = false;
-        showingFailScreen = false;
-        currentQuizItem = null;
-        selectedOption = 0;
-
-        player = new Player(300, Constants.LEVEL_HEIGHT - Constants.PLAYER_HEIGHT - 20);
-
-        items.clear();
-        initializeItems();
     }
 
     public void start() {

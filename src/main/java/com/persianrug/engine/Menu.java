@@ -7,18 +7,45 @@ import javafx.scene.text.TextAlignment;
 import com.persianrug.utils.Constants;
 
 public class Menu {
-    private String[] options = {"Play", "Settings", "Exit"};
+    private String[] options;
     private int selectedOption = 0;
+    private boolean isMainMenu = true;
+
+    public Menu() {
+        setMainMenuOptions();
+    }
+
+    public void setMainMenuOptions() {
+        options = new String[]{"New Game", "Load Game", "Exit"};
+        isMainMenu = true;
+    }
+
+    public void setPauseMenuOptions() {
+        options = new String[]{"Resume", "Save Game", "Back to Menu"};
+        isMainMenu = false;
+    }
+
+    public void moveUp() {
+        selectedOption = (selectedOption - 1 + options.length) % options.length;
+    }
+
+    public void moveDown() {
+        selectedOption = (selectedOption + 1) % options.length;
+    }
+
+    public int getSelectedOption() {
+        return selectedOption;
+    }
 
     public void render(GraphicsContext gc) {
-
         gc.setFill(new Color(0, 0, 0, 0.8));
         gc.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 
         gc.setFill(Color.WHITE);
-        gc.setFont(new Font("Arial", 48));
+        gc.setFont(new Font("Arial Bold", 48));
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Persian Rug", Constants.WINDOW_WIDTH / 2, 150);
+        gc.fillText(isMainMenu ? "Persian Rug" : "Paused",
+                Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 3);
 
         gc.setFont(new Font("Arial", 24));
         for (int i = 0; i < options.length; i++) {
@@ -27,30 +54,14 @@ public class Menu {
             } else {
                 gc.setFill(Color.WHITE);
             }
-            gc.fillText(options[i], Constants.WINDOW_WIDTH / 2, 300 + i * 50);
+            gc.fillText(options[i],
+                    Constants.WINDOW_WIDTH / 2,
+                    Constants.WINDOW_HEIGHT / 2 + i * 50);
         }
 
-        gc.setFont(new Font("Arial", 20));
         gc.setFill(Color.LIGHTGRAY);
-        gc.fillText("Use UP/DOWN arrows to navigate", Constants.WINDOW_WIDTH / 2, 500);
-        gc.fillText("Press ENTER to select", Constants.WINDOW_WIDTH / 2, 530);
-    }
-
-    public void moveUp() {
-        selectedOption--;
-        if (selectedOption < 0) {
-            selectedOption = options.length - 1;
-        }
-    }
-
-    public void moveDown() {
-        selectedOption++;
-        if (selectedOption >= options.length) {
-            selectedOption = 0;
-        }
-    }
-
-    public int getSelectedOption() {
-        return selectedOption;
+        gc.setFont(new Font("Arial", 16));
+        gc.fillText("Use UP/DOWN arrows to select and ENTER to confirm",
+                Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT * 3 / 4);
     }
 }

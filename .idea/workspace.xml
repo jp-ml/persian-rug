@@ -7,8 +7,13 @@
     <list default="true" id="26004743-d471-4977-a5a3-6fba98f88160" name="Changes" comment="Add a test image">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/persianrug/engine/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/persianrug/engine/GameEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/persianrug/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/persianrug/utils/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/entity/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/entity/Player.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/persianrug/engine/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/persianrug/engine/GameState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/persianrug/engine/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/persianrug/engine/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/engine/GameState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/persianrug/engine/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/persianrug/engine/Menu.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +114,8 @@
       <workItem from="1731748822283" duration="2000" />
       <workItem from="1731748844442" duration="80000" />
       <workItem from="1731824943230" duration="279000" />
-      <workItem from="1731919978535" duration="2267000" />
+      <workItem from="1731919978535" duration="2649000" />
+      <workItem from="1731998267567" duration="1427000" />
     </task>
     <task id="LOCAL-00001" summary="Hello World!">
       <option name="closed" value="true" />
