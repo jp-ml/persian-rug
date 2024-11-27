@@ -5,7 +5,8 @@ import javafx.scene.canvas.GraphicsContext;
 public abstract class GameObject {
     protected double x, y;
     protected double width, height;
-    protected double previousX, previousY;  // 이전 위치 저장용
+    public double previousX;
+    public double previousY;  // 이전 위치 저장용
 
     public GameObject(double x, double y, double width, double height) {
         this.x = x;
@@ -26,7 +27,7 @@ public abstract class GameObject {
                 y + height > other.y;
     }
 
-    protected void updatePreviousPosition() {
+    public void updatePreviousPosition() {
         previousX = x;
         previousY = y;
     }
