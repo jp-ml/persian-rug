@@ -219,6 +219,7 @@ public class GameEngine {
             if (currentTime - failStartTime >= FAIL_SCREEN_DURATION) {
                 showingFailScreen = false;
                 gameState = GameState.MENU;
+                menu.setMainMenuOptions();
                 resetGame();
             }
             return;
@@ -585,92 +586,82 @@ public class GameEngine {
         totalQuestions = 20;
 
         Quiz[] quizzes = {
-                // Inheritance
                 new Quiz("Which keyword is used to inherit a class in Java?",
                         new String[]{"extends", "implements", "inherits", "using"}, 0),
                 new Quiz("What type of inheritance is supported by Java?",
                         new String[]{"Multiple", "Single", "Hybrid", "All of above"}, 1),
 
-                // Abstraction
                 new Quiz("Which keyword is used to declare an abstract class?",
                         new String[]{"abstract", "virtual", "sealed", "extends"}, 0),
                 new Quiz("Can abstract class have constructor in Java?",
                         new String[]{"Yes", "No", "Depends on JVM", "Only static"}, 0),
 
-                // Interfaces
                 new Quiz("Can an interface contain concrete methods?",
-                        new String[]{"No", "Yes, with default", "Only static", "Only final"}, 1),
-                new Quiz("Which access modifier is allowed for interface methods?",
-                        new String[]{"private", "protected", "package-private", "public"}, 3),
+                        new String[]{"No", "Yes, it can", "Only static", "Only final"}, 1),
+                new Quiz("Can static methods exist in non-static inner classes?",
+                        new String[]{"Yes", "No", "Only if final", "Depends on JVM"}, 1),
 
-                // Polymorphism
-                new Quiz("Which type of polymorphism is method overloading?",
-                        new String[]{"Runtime", "Compile-time", "Dynamic", "Multi-level"}, 1),
-                new Quiz("What enables runtime polymorphism in Java?",
-                        new String[]{"Interfaces", "Method Overriding", "Inheritance", "All above"}, 3),
+                new Quiz("When calling overridden method on a subclass object, which is executed?",
+                        new String[]{"Superclass version", "Subclass version", "Both versions", "Random version"}, 1),
+                new Quiz("What concept allows to treat a derived class object as base class object?",
+                        new String[]{"Inheritance", "Encapsulation", "Upcasting", "Abstraction"}, 2),
 
-                // Generics
                 new Quiz("What symbol is used for generic type parameter?",
                         new String[]{"<>", "{}", "[]", "()"}, 0),
-                new Quiz("What is type erasure in Java generics?",
-                        new String[]{"Runtime check", "Compile removal", "Type conversion", "Error handling"}, 1),
+                new Quiz("What is the time complexity of selection sort?",
+                        new String[]{"O(n)", "O(n log n)", "O(n²)", "O(1)"}, 2),
 
-                // Data Structures
-                new Quiz("Which collection doesn't allow duplicates?",
-                        new String[]{"ArrayList", "LinkedList", "HashSet", "Vector"}, 2),
+                new Quiz("What type of Queue allows addition and removal from both ends?",
+                        new String[]{"Priority Queue", "Circular Queue", "Deque", "Simple Queue"}, 2),
                 new Quiz("Which interface is parent of Set interface?",
                         new String[]{"List", "Collection", "Map", "Queue"}, 1),
 
-                // Inner Classes
-                new Quiz("Which is not a type of inner class?",
-                        new String[]{"Static", "Local", "Anonymous", "Virtual"}, 3),
-                new Quiz("Can inner class be declared as private?",
-                        new String[]{"Yes", "No", "Only static", "Only final"}, 0),
+                new Quiz("What symbol is used for wildcards in generics?",
+                        new String[]{"*", "?", "@", "$"}, 1),
+                new Quiz("When can a local inner class access a local variable?",
+                        new String[]{"If static", "If final/effectively final", "If private", "If public"}, 1),
 
-                // Complexity
                 new Quiz("What is ArrayList's search complexity?",
                         new String[]{"O(1)", "O(n)", "O(log n)", "O(n²)"}, 1),
                 new Quiz("QuickSort's average complexity is:",
                         new String[]{"O(n)", "O(n log n)", "O(n²)", "O(log n)"}, 1),
 
-                // Sorting
-                new Quiz("Which sort is most memory efficient?",
-                        new String[]{"Merge Sort", "Quick Sort", "Heap Sort", "Bubble Sort"}, 3),
-                new Quiz("Which sorting algorithm is stable?",
-                        new String[]{"QuickSort", "HeapSort", "MergeSort", "SelectionSort"}, 2),
+                new Quiz("Which collection type doesn't allow duplicates?",
+                        new String[]{"ArrayList", "LinkedList", "HashSet", "Vector"}, 2),
+                new Quiz("What is the purpose of generics in Java?",
+                        new String[]{"Code reusability", "Type safety", "Better performance", "Memory management"}, 1),
 
-                // Advanced Concepts
-                new Quiz("What is marker interface in Java?",
-                        new String[]{"Empty interface", "Abstract interface", "Static interface", "Final interface"}, 0),
+                new Quiz("Which collection implementation automatically sorts its elements?",
+                        new String[]{"ArrayList", "LinkedList", "PriorityQueue", "Vector"}, 2),
                 new Quiz("Who teaches 2024 Fall COMP2522 in BCIT?",
                         new String[]{"Asif", "Brenda", "Alireza", "Chris"}, 3)
         };
 
-        items.add(new Item(1200 + 200, 6200 - 50, "/images/symbol.png", quizzes[0]));
-        items.add(new Item(2000, 6000 - 50, "/images/symbol.png", quizzes[1]));
-        items.add(new Item(2800, 5800 - 50, "/images/symbol.png", quizzes[2]));
+        items.add(new Item(1400, 6100, "/images/symbol.png", quizzes[0]));
+        items.add(new Item(2000, 5600, "/images/symbol.png", quizzes[1]));
+        items.add(new Item(2800, 5300, "/images/symbol.png", quizzes[2]));
 
-        items.add(new Item(3400, 5200 - 50, "/images/symbol.png", quizzes[3]));
-        items.add(new Item(3000, 4800 - 50, "/images/symbol.png", quizzes[4]));
-        items.add(new Item(2600, 4400 - 50, "/images/symbol.png", quizzes[5]));
+        items.add(new Item(3400, 5100, "/images/symbol.png", quizzes[3]));
+        items.add(new Item(3000, 4550, "/images/symbol.png", quizzes[4]));
+        items.add(new Item(2600, 4300, "/images/symbol.png", quizzes[5]));
 
-        items.add(new Item(2000, 4000 - 50, "/images/symbol.png", quizzes[6]));
-        items.add(new Item(2400, 3800 - 50, "/images/symbol.png", quizzes[7]));
-        items.add(new Item(2800, 3600 - 50, "/images/symbol.png", quizzes[8]));
-        items.add(new Item(3200, 3400 - 50, "/images/symbol.png", quizzes[9]));
+        items.add(new Item(2000, 3950, "/images/symbol.png", quizzes[6]));
+        items.add(new Item(2400, 3700, "/images/symbol.png", quizzes[7]));
+        items.add(new Item(2800, 3550, "/images/symbol.png", quizzes[8]));
+        items.add(new Item(3200, 3350, "/images/symbol.png", quizzes[9]));
 
-        items.add(new Item(6500, 1000 - 50, "/images/symbol.png", quizzes[10]));
-        items.add(new Item(5300, 380 - 50, "/images/symbol.png", quizzes[11]));
-        items.add(new Item(4700, 370 - 50, "/images/symbol.png", quizzes[12]));
+        items.add(new Item(6500, 950, "/images/symbol.png", quizzes[10]));
+        items.add(new Item(5300, 330, "/images/symbol.png", quizzes[11]));
+        items.add(new Item(4700, 320, "/images/symbol.png", quizzes[12]));
 
-        items.add(new Item(4100, 370 - 50, "/images/symbol.png", quizzes[13]));
-        items.add(new Item(3500, 360 - 50, "/images/symbol.png", quizzes[14]));
-        items.add(new Item(2900, 350 - 50, "/images/symbol.png", quizzes[15]));
+        items.add(new Item(4100, 320, "/images/symbol.png", quizzes[13]));
+        items.add(new Item(3500, 310, "/images/symbol.png", quizzes[14]));
+        items.add(new Item(2900, 300, "/images/symbol.png", quizzes[15]));
 
-        items.add(new Item(2300, 300 - 50, "/images/symbol.png", quizzes[16]));
-        items.add(new Item(1700, 300 - 50, "/images/symbol.png", quizzes[17]));
-        items.add(new Item(1100, 300 - 50, "/images/symbol.png", quizzes[18]));
-        items.add(new Item(200, 300 - 50, "/images/symbol.png", quizzes[19]));
+        items.add(new Item(2300, 250, "/images/symbol.png", quizzes[16]));
+        items.add(new Item(1700, 250, "/images/symbol.png", quizzes[17]));
+        items.add(new Item(1100, 250, "/images/symbol.png", quizzes[18]));
+        items.add(new Item(200, 250, "/images/symbol.png", quizzes[19]));
     }
 
     public void start() {

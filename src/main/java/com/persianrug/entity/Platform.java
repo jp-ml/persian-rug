@@ -2,22 +2,25 @@ package com.persianrug.entity;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class Platform extends GameObject {
     private Image platformImage;
+    private boolean isGroundPlatform;
 
     public Platform(double x, double y, double width, double height) {
         super(x, y, width, height);
-        loadImage();
+        this.isGroundPlatform = (y == 7480);
+        if (!isGroundPlatform) {
+            loadImage();
+        }
     }
 
     private void loadImage() {
         try {
             platformImage = new Image(getClass().getResource("/images/platform.png").toString());
-            System.out.println("Platform image loaded successfully");
         } catch (Exception e) {
             System.err.println("Platform image loading failed: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -27,12 +30,11 @@ public class Platform extends GameObject {
 
     @Override
     public void render(GraphicsContext gc) {
-        if (platformImage != null) {
-            gc.drawImage(platformImage, x, y, width, height);
-        } else {
-            // Fallback to rectangle if image fails to load
-            gc.setFill(javafx.scene.paint.Color.GRAY);
+        if (isGroundPlatform) {
+            gc.setFill(Color.SLATEGRAY);
             gc.fillRect(x, y, width, height);
+        } else if (platformImage != null) {
+            gc.drawImage(platformImage, x, y, width, height);
         }
     }
 }
