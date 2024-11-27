@@ -363,7 +363,7 @@ public class GameEngine {
 
         Quiz quiz = currentQuizItem.getQuiz();
         gc.fillText(quiz.getQuestion(),
-                Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 - 100);
+                (double) Constants.WINDOW_WIDTH /2, (double) Constants.WINDOW_HEIGHT/2 - 100);
 
         String[] options = quiz.getOptions();
         for (int i = 0; i < options.length; i++) {
@@ -373,14 +373,14 @@ public class GameEngine {
                 gc.setFill(Color.WHITE);
             }
             gc.fillText((i + 1) + ". " + options[i],
-                    Constants.WINDOW_WIDTH/2,
-                    Constants.WINDOW_HEIGHT/2 + i * 40);
+                    (double) Constants.WINDOW_WIDTH/2,
+                    (double) Constants.WINDOW_HEIGHT/2 + i * 40);
         }
 
         gc.setFill(Color.LIGHTGRAY);
         gc.setFont(new Font("Arial", 16));
         gc.fillText("Use UP/DOWN to select, ENTER to answer",
-                Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 200);
+                (double) Constants.WINDOW_WIDTH/2, (double) Constants.WINDOW_HEIGHT/2 + 200);
     }
 
     private void renderFailScreen() {
@@ -390,13 +390,13 @@ public class GameEngine {
         gc.setFill(Color.RED);
         gc.setFont(new Font("Arial", 70));
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Failed!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2);
+        gc.fillText("Failed!", (double) Constants.WINDOW_WIDTH/2, (double) Constants.WINDOW_HEIGHT/2);
 
         gc.setFill(Color.WHITESMOKE);
         gc.setFont(new Font("Arial", 20));
         long remainingTime = (FAIL_SCREEN_DURATION - (System.currentTimeMillis() - failStartTime)) / 1000 + 1;
         gc.fillText("Returning to menu in " + remainingTime + " seconds",
-                Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 50);
+                (double) Constants.WINDOW_WIDTH/2, (double) Constants.WINDOW_HEIGHT/2 + 50);
     }
 
     private void renderPauseScreen() {
@@ -413,15 +413,12 @@ public class GameEngine {
         gc.setFill(Color.GOLD);
         gc.setFont(new Font("Arial Bold", 72));
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Congratulations!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 - 60);
+        gc.fillText("Congratulations!", (double) Constants.WINDOW_WIDTH/2, (double) Constants.WINDOW_HEIGHT/2 - 60);
 
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("Arial", 36));
-        gc.fillText("You've mastered Java OOP!", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 20);
-        gc.fillText("20/20 Correct Answers", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 70);
-
-        gc.setFont(new Font("Arial", 24));
-        gc.fillText("Press ESC for menu", Constants.WINDOW_WIDTH/2, Constants.WINDOW_HEIGHT/2 + 140);
+        gc.fillText("You've mastered Java OOP!", (double) Constants.WINDOW_WIDTH/2, (double) Constants.WINDOW_HEIGHT/2 + 20);
+        gc.fillText("20/20 Correct Answers", (double) Constants.WINDOW_WIDTH/2, (double) Constants.WINDOW_HEIGHT/2 + 70);
     }
     private void checkCollisions() {
         player.setOnGround(false);
