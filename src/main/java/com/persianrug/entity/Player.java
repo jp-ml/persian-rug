@@ -151,4 +151,33 @@ public class Player extends GameObject {
             isDoubleJumping = false;
         }
     }
+
+    public double getVelocityX() {
+        return velocityX;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
+    }
+
+
+    public boolean canDoubleJump() {
+        return canDoubleJump;
+    }
+
+    public boolean isOnGround() {
+        return onGround;
+    }
+
+    public void setY(double v) {
+        y = v;
+    }
+
+    public void setVelocityY(double v) {
+        velocityY = v;
+    }
+
+    public void setX(double v) {
+        x = v;
+    }
 }
