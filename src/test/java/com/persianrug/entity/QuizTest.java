@@ -23,9 +23,7 @@ public class QuizTest {
         String question = "What is the capital of France?";
         String[] options = {"Paris", "Berlin", "Madrid"};
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Quiz(question, options, 0);
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Quiz(question, options, 0));
 
         assertEquals("Quiz must have exactly 4 options", exception.getMessage(), "Exception message should indicate invalid option count.");
     }
@@ -36,9 +34,7 @@ public class QuizTest {
         String[] options = {"Paris", "Berlin", "Madrid", "Rome"};
         int correctAnswer = -1; // Invalid index
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Quiz(question, options, correctAnswer);
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Quiz(question, options, correctAnswer));
 
         assertEquals("Correct answer index must be between 0 and 3", exception.getMessage(), "Exception message should indicate invalid correct answer index.");
     }
@@ -49,9 +45,7 @@ public class QuizTest {
         String[] options = {"Paris", "Berlin", "Madrid", "Rome"};
         int correctAnswer = 4; // Invalid index
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Quiz(question, options, correctAnswer);
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Quiz(question, options, correctAnswer));
 
         assertEquals("Correct answer index must be between 0 and 3", exception.getMessage(), "Exception message should indicate invalid correct answer index.");
     }
