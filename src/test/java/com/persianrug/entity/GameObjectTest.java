@@ -1,4 +1,5 @@
-import com.persianrug.entity.GameObject;
+package com.persianrug.entity;
+
 import javafx.scene.canvas.GraphicsContext;
 import org.junit.jupiter.api.Test;
 
