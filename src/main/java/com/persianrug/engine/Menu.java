@@ -45,7 +45,7 @@ public class Menu {
         gc.setFont(new Font("Arial Bold", 48));
         gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText(isMainMenu ? "Persian Rug" : "Paused",
-                Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 3);
+                (double) Constants.WINDOW_WIDTH / 2, (double) Constants.WINDOW_HEIGHT / 3);
 
         gc.setFont(new Font("Arial", 24));
         for (int i = 0; i < options.length; i++) {
@@ -55,13 +55,13 @@ public class Menu {
                 gc.setFill(Color.WHITE);
             }
             gc.fillText(options[i],
-                    Constants.WINDOW_WIDTH / 2,
-                    Constants.WINDOW_HEIGHT / 2 + i * 50);
+                    (double) Constants.WINDOW_WIDTH / 2,
+                    (double) Constants.WINDOW_HEIGHT / 2 + i * 50);
         }
 
         gc.setFill(Color.LIGHTGRAY);
         gc.setFont(new Font("Arial", 16));
         gc.fillText("Use UP/DOWN arrows to select and ENTER to confirm",
-                Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT * 3 / 4);
+                (double) Constants.WINDOW_WIDTH / 2, (double) (Constants.WINDOW_HEIGHT * 3) / 4);
     }
 }

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class InputManager {
-    private Set<KeyCode> activeKeys;
+    private final Set<KeyCode> activeKeys;
 
     public InputManager() {
         activeKeys = new HashSet<>();

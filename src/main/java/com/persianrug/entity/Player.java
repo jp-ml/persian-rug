@@ -4,6 +4,8 @@ import com.persianrug.utils.Constants;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.net.URL;
+
 public class Player extends GameObject {
     private double velocityX = 0;
     private double velocityY = 0;
@@ -14,9 +16,6 @@ public class Player extends GameObject {
     private boolean isFacingRight = true;
     private boolean isDoubleJumping = false;
 
-    // Wave parameters for image
-    private double waveAmplitude = 5;
-    private double waveSpeed = 0.1;
     private double waveOffset = 0;
 
     public Player(double x, double y) {
@@ -26,14 +25,25 @@ public class Player extends GameObject {
 
     private void loadCharacterImages() {
         try {
-            characterLeftImage = new Image(getClass().getResource("/images/character_left.png").toString());
-            characterRightImage = new Image(getClass().getResource("/images/character_right.png").toString());
+            URL leftImageUrl = getClass().getResource("/images/character_left.png");
+            URL rightImageUrl = getClass().getResource("/images/character_right.png");
+
+            if (leftImageUrl == null) {
+                throw new RuntimeException("Resource not found: /images/character_left.png");
+            }
+            if (rightImageUrl == null) {
+                throw new RuntimeException("Resource not found: /images/character_right.png");
+            }
+
+            characterLeftImage = new Image(leftImageUrl.toString());
+            characterRightImage = new Image(rightImageUrl.toString());
+
             System.out.println("Character images loaded successfully");
         } catch (Exception e) {
             System.err.println("Character image loading failed: " + e.getMessage());
-            e.printStackTrace();
         }
     }
+
 
     @Override
     public void update() {
@@ -48,6 +58,7 @@ public class Player extends GameObject {
         y += velocityY;
 
         // Apply wave offset for continuous wave animation
+        double waveSpeed = 0.1;
         waveOffset += waveSpeed;
 
         if (velocityX > 0) {
@@ -83,6 +94,8 @@ public class Player extends GameObject {
         Image currentImage = isFacingRight ? characterRightImage : characterLeftImage;
 
         if (currentImage != null) {
+            // Wave parameters for image
+            double waveAmplitude = 5;
             double wave = Math.sin(waveOffset) * waveAmplitude;
 
             gc.drawImage(currentImage, x, y + wave, width, height);

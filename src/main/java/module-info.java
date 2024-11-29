@@ -1,6 +1,7 @@
 module com.persianrug {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.junit.jupiter.api;
 
     opens com.persianrug to javafx.fxml;
     exports com.persianrug;

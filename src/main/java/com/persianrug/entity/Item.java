@@ -3,10 +3,17 @@ package com.persianrug.entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.net.URL;
+
 public class Item extends GameObject {
     private Image itemImage;
     private boolean collected = false;
-    private Quiz quiz;
+    private final Quiz quiz;
+
+    public Item() {
+        super(0, 0, 50, 50);
+        this.quiz = null;
+    }
 
     public Item(double x, double y, String imagePath, Quiz quiz) {
         super(x, y, 50, 50);
@@ -15,18 +22,15 @@ public class Item extends GameObject {
     }
 
     private void loadImage(String imagePath) {
-        try {
-            itemImage = new Image(getClass().getResource(imagePath).toString());
-            System.out.println("Item image loaded successfully: " + imagePath);
-        } catch (Exception e) {
-            System.err.println("Item image loading failed: " + e.getMessage());
-            e.printStackTrace();
+        URL resourceUrl = getClass().getResource(imagePath);
+        if (resourceUrl == null) {
+            throw new RuntimeException("Resource not found: " + imagePath);
         }
+        itemImage = new Image(resourceUrl.toString());
     }
 
     @Override
     public void update() {
-        // Items don't need updating
     }
 
     @Override
@@ -49,23 +53,7 @@ public class Item extends GameObject {
         return quiz;
     }
 
-    @Override
-    public double getWidth() {
-        return width;
-    }
-
-    @Override
-    public double getHeight() {
-        return height;
-    }
-
-    @Override
-    public double getX() {
-        return x;
-    }
-
-    @Override
-    public double getY() {
-        return y;
+    public void setCollected(boolean collected) {
+        this.collected = collected;
     }
 }

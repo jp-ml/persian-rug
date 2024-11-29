@@ -16,18 +16,19 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameEngine {
-    private Canvas canvas;
     private GraphicsContext gc;
     private Player player;
     private InputManager inputManager;
     private AnimationTimer gameLoop;
     private Camera camera;
     private List<Platform> platforms;
-    private List<Item> items;
+    private List<Item> items = new ArrayList<>();
     private Image backgroundImage;
     private GameState gameState;
     private Menu menu;
@@ -49,6 +50,7 @@ public class GameEngine {
     }
 
     private void initializeGame(Stage stage) {
+        Canvas canvas;
         // Create canvas
         canvas = new Canvas(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -72,13 +74,12 @@ public class GameEngine {
         initializeItems();
 
         // Load background image
-        try {
-            backgroundImage = new Image(getClass().getResource("/images/background.png").toString());
-            System.out.println("Background image loaded successfully");
-        } catch (Exception e) {
-            System.err.println("Background image loading failed: " + e.getMessage());
-            e.printStackTrace();
+        URL resourceUrl = getClass().getResource("/images/background.png");
+        if (resourceUrl == null) {
+            throw new RuntimeException("Resource not found: /images/background.png");
         }
+        backgroundImage = new Image(resourceUrl.toString());
+
 
         Pane root = new Pane(canvas);
         Scene scene = new Scene(root);
@@ -214,6 +215,7 @@ public class GameEngine {
     }
 
     private void updateGame() {
+
         if (showingFailScreen) {
             long currentTime = System.currentTimeMillis();
             if (currentTime - failStartTime >= FAIL_SCREEN_DURATION) {
@@ -630,35 +632,35 @@ public class GameEngine {
 
                 new Quiz("Which collection implementation automatically sorts its elements?",
                         new String[]{"ArrayList", "LinkedList", "PriorityQueue", "Vector"}, 2),
-                new Quiz("Who teaches 2024 Fall COMP2522 in BCIT?",
+                new Quiz("Who teaches Fall COMP2522? in 2024",
                         new String[]{"Asif", "Brenda", "Alireza", "Chris"}, 3)
         };
 
-        items.add(new Item(1400, 6100, "/images/symbol.png", quizzes[0]));
-        items.add(new Item(2000, 5600, "/images/symbol.png", quizzes[1]));
-        items.add(new Item(2800, 5300, "/images/symbol.png", quizzes[2]));
+        items.add(new Item(1400.0, 6100.0, "/images/symbol.png", quizzes[0]));
+        items.add(new Item(2000.0, 5600.0, "/images/symbol.png", quizzes[1]));
+        items.add(new Item(2800.0, 5300.0, "/images/symbol.png", quizzes[2]));
 
-        items.add(new Item(3400, 5100, "/images/symbol.png", quizzes[3]));
-        items.add(new Item(3000, 4550, "/images/symbol.png", quizzes[4]));
-        items.add(new Item(2600, 4300, "/images/symbol.png", quizzes[5]));
+        items.add(new Item(3400.0, 5100.0, "/images/symbol.png", quizzes[3]));
+        items.add(new Item(3000.0, 4550.0, "/images/symbol.png", quizzes[4]));
+        items.add(new Item(2600.0, 4300.0, "/images/symbol.png", quizzes[5]));
 
-        items.add(new Item(2000, 3950, "/images/symbol.png", quizzes[6]));
-        items.add(new Item(2400, 3700, "/images/symbol.png", quizzes[7]));
-        items.add(new Item(2800, 3550, "/images/symbol.png", quizzes[8]));
-        items.add(new Item(3200, 3350, "/images/symbol.png", quizzes[9]));
+        items.add(new Item(2000.0, 3950.0, "/images/symbol.png", quizzes[6]));
+        items.add(new Item(2400.0, 3700.0, "/images/symbol.png", quizzes[7]));
+        items.add(new Item(2800.0, 3550.0, "/images/symbol.png", quizzes[8]));
+        items.add(new Item(3200.0, 3350.0, "/images/symbol.png", quizzes[9]));
 
-        items.add(new Item(6500, 950, "/images/symbol.png", quizzes[10]));
-        items.add(new Item(5300, 330, "/images/symbol.png", quizzes[11]));
-        items.add(new Item(4700, 320, "/images/symbol.png", quizzes[12]));
+        items.add(new Item(6500.0, 950.0, "/images/symbol.png", quizzes[10]));
+        items.add(new Item(5300.0, 330.0, "/images/symbol.png", quizzes[11]));
+        items.add(new Item(4700.0, 320.0, "/images/symbol.png", quizzes[12]));
 
-        items.add(new Item(4100, 320, "/images/symbol.png", quizzes[13]));
-        items.add(new Item(3500, 310, "/images/symbol.png", quizzes[14]));
-        items.add(new Item(2900, 300, "/images/symbol.png", quizzes[15]));
+        items.add(new Item(4100.0, 320.0, "/images/symbol.png", quizzes[13]));
+        items.add(new Item(3500.0, 310.0, "/images/symbol.png", quizzes[14]));
+        items.add(new Item(2900.0, 300.0, "/images/symbol.png", quizzes[15]));
 
-        items.add(new Item(2300, 250, "/images/symbol.png", quizzes[16]));
-        items.add(new Item(1700, 250, "/images/symbol.png", quizzes[17]));
-        items.add(new Item(1100, 250, "/images/symbol.png", quizzes[18]));
-        items.add(new Item(200, 250, "/images/symbol.png", quizzes[19]));
+        items.add(new Item(2300.0, 250.0, "/images/symbol.png", quizzes[16]));
+        items.add(new Item(1700.0, 250.0, "/images/symbol.png", quizzes[17]));
+        items.add(new Item(1100.0, 250.0, "/images/symbol.png", quizzes[18]));
+        items.add(new Item(200.0, 250.0, "/images/symbol.png", quizzes[19]));
     }
 
     public void start() {

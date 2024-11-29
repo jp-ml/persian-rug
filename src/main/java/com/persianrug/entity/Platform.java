@@ -4,9 +4,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+import java.net.URL;
+
 public class Platform extends GameObject {
     private Image platformImage;
-    private boolean isGroundPlatform;
+    private final boolean isGroundPlatform;
 
     public Platform(double x, double y, double width, double height) {
         super(x, y, width, height);
@@ -17,8 +19,13 @@ public class Platform extends GameObject {
     }
 
     private void loadImage() {
+        URL resourceUrl = getClass().getResource("/images/platform.png");
+        if (resourceUrl == null) {
+            System.err.println("Platform image loading failed: Resource not found at /images/platform.png");
+            return;
+        }
         try {
-            platformImage = new Image(getClass().getResource("/images/platform.png").toString());
+            platformImage = new Image(resourceUrl.toString());
         } catch (Exception e) {
             System.err.println("Platform image loading failed: " + e.getMessage());
         }

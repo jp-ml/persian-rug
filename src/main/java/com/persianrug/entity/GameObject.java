@@ -6,7 +6,7 @@ public abstract class GameObject {
     protected double x, y;
     protected double width, height;
     public double previousX;
-    public double previousY;  // 이전 위치 저장용
+    public double previousY;
 
     public GameObject(double x, double y, double width, double height) {
         this.x = x;

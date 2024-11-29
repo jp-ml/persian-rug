@@ -8,6 +8,7 @@ public class GameSaveManager {
     private static final String SAVE_FILE = "game_save.dat";
 
     public static class GameSave implements Serializable {
+        @Serial
         private static final long serialVersionUID = 1L;
         double playerX;
         double playerY;
@@ -32,7 +33,6 @@ public class GameSaveManager {
             System.out.println("Game saved successfully");
         } catch (IOException e) {
             System.err.println("Error saving game: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 

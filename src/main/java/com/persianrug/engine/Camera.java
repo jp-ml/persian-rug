@@ -13,8 +13,8 @@ public class Camera {
     }
 
     public void update(Player player) {
-        x = player.getX() - Constants.WINDOW_WIDTH / 2 + player.getWidth() / 2;
-        y = player.getY() - Constants.WINDOW_HEIGHT / 2 + player.getHeight() / 2;
+        x = player.getX() - (double) Constants.WINDOW_WIDTH / 2 + player.getWidth() / 2;
+        y = player.getY() - (double) Constants.WINDOW_HEIGHT / 2 + player.getHeight() / 2;
 
         if (x < 0) {
             x = 0;

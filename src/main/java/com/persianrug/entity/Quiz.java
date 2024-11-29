@@ -1,9 +1,9 @@
 package com.persianrug.entity;
 
 public class Quiz {
-    private String question;
-    private String[] options;
-    private int correctAnswer;
+    private final String question;
+    private final String[] options;
+    private final int correctAnswer;
 
     public Quiz(String question, String[] options, int correctAnswer) {
         if (options.length != 4) {
@@ -32,19 +32,4 @@ public class Quiz {
         return isCorrect;
     }
 
-    public void printQuiz() {
-        System.out.println("Question: " + question);
-        for (int i = 0; i < options.length; i++) {
-            System.out.println((i + 1) + ". " + options[i] +
-                    (i == correctAnswer ? " (Correct)" : ""));
-        }
-    }
-
-    public int getCorrectAnswer() {
-        return correctAnswer;
-    }
-
-    public String getCorrectAnswerText() {
-        return options[correctAnswer];
-    }
 }
