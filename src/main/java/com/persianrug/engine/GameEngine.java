@@ -158,65 +158,25 @@ public class GameEngine {
     private static final int FINAL_OFFSET4_X = 100;
     private static final int FINAL_OFFSET5_X = 110;
 
-    /** Graphics context for rendering game elements. */
-    private GraphicsContext gc;
-
-    /** Player instance representing the game character. */
-    private Player player;
-
-    /** Manages keyboard input states. */
-    private InputManager inputManager;
-
-    /** Main game loop timer. */
-    private AnimationTimer gameLoop;
-
-    /** Camera that follows the player. */
-    private Camera camera;
-
-    /** List of all platforms in the game. */
-    private List<Platform> platforms;
-
-    /** List of collectible items. */
-    private List<Item> items = new ArrayList<>();
-
-    /** Background image for the game. */
-    private Image backgroundImage;
-
-    /** Current state of the game. */
-    private GameState gameState;
-
-    /** Menu system for the game. */
-    private Menu menu;
-
-    /** Tracks if jump button is currently pressed. */
-    private boolean jumpPressed = false;
-
-    // Quiz related fields
-    /** Currently active quiz item. */
-    private Item currentQuizItem = null;
-
-    /** Indicates if a quiz is being shown. */
-    private boolean showingQuiz = false;
-
-    /** Currently selected quiz option. */
-    private int selectedOption = 0;
-
-    /** Indicates if failure screen is showing. */
-    private boolean showingFailScreen = false;
-
-    /** Time when failure screen started showing. */
-    private long failStartTime = 0;
-
-    /** Duration to show failure screen in milliseconds. */
     private static final long FAIL_SCREEN_DURATION = 5000;
-
-    /** Total number of quiz questions in the game. */
+    private GraphicsContext gc;
+    private Player player;
+    private InputManager inputManager;
+    private AnimationTimer gameLoop;
+    private Camera camera;
+    private List<Platform> platforms;
+    private List<Item> items = new ArrayList<>();
+    private Image backgroundImage;
+    private GameState gameState;
+    private Menu menu;
+    private boolean jumpPressed = false;
+    private Item currentQuizItem = null;
+    private boolean showingQuiz = false;
+    private int selectedOption = 0;
+    private boolean showingFailScreen = false;
+    private long failStartTime = 0;
     private int totalQuestions;
-
-    /** Number of correctly answered questions. */
     private int correctAnswers = 0;
-
-    /** Indicates if all quizzes are completed. */
     private boolean gameCompleted = false;
 
     /**
@@ -285,7 +245,7 @@ public class GameEngine {
         // Create game loop
         gameLoop = new AnimationTimer() {
             @Override
-            public void handle(long now) {
+            public void handle(final long now) {
                 update();
                 render();
             }
@@ -298,7 +258,7 @@ public class GameEngine {
      *
      * @param code The key code of the pressed key
      */
-    private void handleKeyPress(KeyCode code) {
+    private void handleKeyPress(final KeyCode code) {
         switch (gameState) {
             case MENU:
                 handleMenuInput(code);
@@ -322,7 +282,7 @@ public class GameEngine {
      *
      * @param code The key code of the pressed key
      */
-    private void handleMenuInput(KeyCode code) {
+    private void handleMenuInput(final KeyCode code) {
         switch (code) {
             case UP:
                 menu.moveUp();
@@ -357,7 +317,7 @@ public class GameEngine {
      *
      * @param code The key code of the pressed key
      */
-    private void handlePauseMenuInput(KeyCode code) {
+    private void handlePauseMenuInput(final KeyCode code) {
         switch (code) {
             case UP:
                 menu.moveUp();
