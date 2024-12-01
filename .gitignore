@@ -1,0 +1,26 @@
+# Ignore IntelliJ IDEA project files
+.idea/
+*.iml
+
+# Ignore Maven output directories
+/target/
+!src/main/resources/ # Allow resources to be tracked
+
+# Ignore log files
+*.log
+
+# Ignore system-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore compiled Java files
+*.class
+
+# Ignore Maven wrapper files
+.mvn/wrapper/maven-wrapper.jar
+
+# Ignore test result files
+surefire-reports/
+
+# Ignore generated data files
+*.dat
