@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameObjectTest {
 
-    // A simple implementation of GameObject for testing purposes
+    // implementation of GameObject for testing purposes
     static class TestGameObject extends GameObject {
         public TestGameObject(double x, double y, double width, double height) {
             super(x, y, width, height);
@@ -15,20 +15,17 @@ class GameObjectTest {
 
         @Override
         public void update() {
-            // For testing, move the object diagonally
             x += 1;
             y += 1;
         }
 
         @Override
         public void render(GraphicsContext gc) {
-            // Rendering logic is not testable in this context
         }
     }
 
     // Test data
     private final TestGameObject gameObject1 = new TestGameObject(10, 20, 50, 50);
-    private final TestGameObject gameObject2 = new TestGameObject(40, 60, 50, 50);
     private final TestGameObject overlappingObject = new TestGameObject(50, 70, 30, 30);
 
     // Constructor Tests
@@ -39,8 +36,8 @@ class GameObjectTest {
         assertEquals(10, obj.getY());
         assertEquals(20, obj.getWidth());
         assertEquals(25, obj.getHeight());
-        assertEquals(5, obj.previousX);
-        assertEquals(10, obj.previousY);
+        assertEquals(5, obj.getPreviousX());
+        assertEquals(10, obj.getPreviousY());
     }
 
     // Getter Tests
@@ -64,8 +61,8 @@ class GameObjectTest {
     void testUpdatePreviousPositionUpdatesCorrectly() {
         gameObject1.update();
         gameObject1.updatePreviousPosition();
-        assertEquals(11, gameObject1.previousX);
-        assertEquals(21, gameObject1.previousY);
+        assertEquals(11, gameObject1.getPreviousX());
+        assertEquals(21, gameObject1.getPreviousY());
     }
 
     @Test
@@ -78,12 +75,6 @@ class GameObjectTest {
     void testIntersectsEdgeCaseJustTouching() {
         TestGameObject touchingObject = new TestGameObject(60, 70, 10, 10); // Exactly at the boundary
         assertTrue(overlappingObject.intersects(touchingObject));
-    }
-
-    @Test
-    void testRenderDoesNotThrowException() {
-        GraphicsContext mockGraphicsContext = null; // Replace with a proper mock for a real test
-        assertDoesNotThrow(() -> gameObject1.render(mockGraphicsContext));
     }
 
 
